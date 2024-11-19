@@ -1,0 +1,63 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Courier New", Courier, monospace;
+}
+
+body {
+  background-color: rgb(231, 217, 188);
+}
+body main {
+  text-align: center;
+}
+body main > div {
+  margin: 10px 200px 100px 200px;
+  padding: 100px 0;
+  text-align: center;
+  background-color: rgb(189, 141, 141);
+  border-radius: 30px;
+  border: solid rgb(146, 77, 77);
+}
+body main > div section {
+  text-align: center;
+}
+body main > div section > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+body main > div section > div #login, body main > div section > div #register {
+  margin: 3px;
+}
+body main > div section > div .image-button-login {
+  background: url("./assets/loginUC.png") no-repeat center center;
+  background-size: cover;
+  border: none;
+  width: 150px;
+  height: 50px;
+  cursor: pointer;
+  transition: background-image 0.3s ease;
+}
+body main > div section > div .image-button-login:hover {
+  background: url("./assets/loginCC.png") no-repeat center center;
+  background-size: cover;
+}
+body main > div section > div .image-button-register {
+  background: url("./assets/registerUC.png") no-repeat center center;
+  background-size: cover;
+  border: none;
+  width: 150px;
+  height: 50px;
+  cursor: pointer;
+  transition: background-image 0.3s ease;
+}
+body main > div section > div .image-button-register:hover {
+  background: url("./assets/registerCC.png") no-repeat center center;
+  background-size: cover;
+}
+body main > div section h2 {
+  padding: 50px;
+}/*# sourceMappingURL=style.css.map */
