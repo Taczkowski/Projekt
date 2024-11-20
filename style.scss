@@ -1,72 +1,111 @@
+$primary-color: rgb(189, 141, 141);
+$secondary-color: rgb(146, 77, 77);
+$background-color: rgb(231, 217, 188);
+
+@keyframes snowflakes-fall {
+  0% { top: -10%; }
+  100% { top: 100%; }
+}
+
+@keyframes snowflakes-shake {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(80px); }
+}
+
+.snowflake {
+  position: fixed;
+  top: -10%;
+  z-index: 9999;
+  user-select: none;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  animation: snowflakes-fall 10s linear infinite, snowflakes-shake 3s ease-in-out infinite;
+  -webkit-animation: snowflakes-fall 10s linear infinite, snowflakes-shake 3s ease-in-out infinite;
+  
+  &:nth-of-type(0) { left: 1%; animation-delay: 0s, 0s; }
+  &:nth-of-type(1) { left: 5%; animation-delay: 1s, 1s; }
+  &:nth-of-type(2) { left: 20%; animation-delay: 6s, 0.5s; }
+  &:nth-of-type(3) { left: 30%; animation-delay: 4s, 2s; }
+  &:nth-of-type(4) { left: 40%; animation-delay: 2s, 2s; }
+  &:nth-of-type(5) { left: 50%; animation-delay: 8s, 3s; }
+  &:nth-of-type(6) { left: 60%; animation-delay: 6s, 2s; }
+  &:nth-of-type(7) { left: 70%; animation-delay: 2s, 1s; }
+  &:nth-of-type(8) { left: 80%; animation-delay: 1s, 0s; }
+  &:nth-of-type(9) { left: 95%; animation-delay: 3s, 1s; }
+  &:nth-of-type(10) { left: 25%; animation-delay: 2s, 0s; }
+  &:nth-of-type(11) { left: 67%; animation-delay: 4s, 2s; }
+}
+
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: 'Courier New', Courier, monospace ;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Courier New", Courier, monospace;
 }
 
 body {
-    background-color: rgb(231, 217, 188);
+  background-color: $background-color;
+}
 
-    main {
-        text-align: center;
+main {
+  text-align: center;
 
-        > div {
-            margin: 10px 200px 100px 200px; 
-            padding: 100px 0; 
-            text-align: center;
-            background-color: rgb(189, 141, 141);
-            border-radius: 30px;
-            border: solid rgb(146, 77, 77); 
+  > div {
+    margin: 10px 200px 100px 200px;
+    padding: 100px 0;
+    text-align: center;
+    background-color: $primary-color;
+    border-radius: 30px;
+    border: solid $secondary-color;
+  }
 
-            section {
-                text-align: center;
+  > div section {
+    text-align: center;
+    
+    > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      
+      #login, #register {
+        margin: 3px;
+      }
 
-                > div {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100%;
+      .image-button-login, .image-button-register {
+        border: none;
+        width: 150px;
+        height: 50px;
+        cursor: pointer;
+        transition: background-image 0.3s ease;
+      }
 
-                    #login, #register {
-                        margin: 3px;
-                    }
-
-                    .image-button-login {
-                        background: url('./assets/loginUC.png') no-repeat center center;
-                        background-size: cover; 
-                        border: none; 
-                        width: 150px; 
-                        height: 50px;
-                        cursor: pointer;
-                        transition: background-image 0.3s ease;
-                    }
-                        .image-button-login:hover{
-                            background: url('./assets/loginCC.png') no-repeat center center;
-                            background-size: cover;
-
-                        }
-                        .image-button-register{
-                        background: url('./assets/registerUC.png') no-repeat center center;
-                        background-size: cover; 
-                        border: none; 
-                        width: 150px; 
-                        height: 50px;
-                        cursor: pointer;
-                        transition: background-image 0.3s ease;
-                    }
-                    .image-button-register:hover{
-                        background: url('./assets/registerCC.png') no-repeat center center;
-                        background-size: cover;
-                    }
-                    
-                }
-
-                h2 {
-                    padding: 50px;
-                }
-            }
+      .image-button-login {
+        background: url("./assets/loginUC.png") no-repeat center center;
+        background-size: cover;
+        
+        &:hover {
+          background: url("./assets/loginCC.png") no-repeat center center;
+          background-size: cover;
         }
+      }
+
+      .image-button-register {
+        background: url("./assets/registerUC.png") no-repeat center center;
+        background-size: cover;
+
+        &:hover {
+          background: url("./assets/registerCC.png") no-repeat center center;
+          background-size: cover;
+        }
+      }
     }
+  }
+
+  > div section h2 {
+    padding: 50px;
+  }
 }
