@@ -15,7 +15,7 @@ $background-color: rgb(231, 217, 188);
 .snowflake {
   position: fixed;
   top: -10%;
-  z-index: 9999;
+  z-index: -1;
   user-select: none;
   cursor: default;
   -webkit-user-select: none;
@@ -23,7 +23,7 @@ $background-color: rgb(231, 217, 188);
   -ms-user-select: none;
   animation: snowflakes-fall 10s linear infinite, snowflakes-shake 3s ease-in-out infinite;
   -webkit-animation: snowflakes-fall 10s linear infinite, snowflakes-shake 3s ease-in-out infinite;
-  
+
   &:nth-of-type(0) { left: 1%; animation-delay: 0s, 0s; }
   &:nth-of-type(1) { left: 5%; animation-delay: 1s, 1s; }
   &:nth-of-type(2) { left: 20%; animation-delay: 6s, 0.5s; }
@@ -44,7 +44,10 @@ $background-color: rgb(231, 217, 188);
   box-sizing: border-box;
   font-family: "Courier New", Courier, monospace;
 }
-
+header{
+  position: relative;
+  z-index: 100;
+}
 body {
   background-color: $background-color;
 }
@@ -52,7 +55,9 @@ body {
 main {
   text-align: center;
 
+
   > div {
+
     margin: 10px 200px 100px 200px;
     padding: 100px 0;
     text-align: center;
@@ -62,43 +67,47 @@ main {
   }
 
   > div section {
+    z-index: 9;
     text-align: center;
-    
+
     > div {
+
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100%;
-      
-      #login, #register {
-        margin: 3px;
-      }
 
-      .image-button-login, .image-button-register {
+      #login {
+        margin: 3px;
         border: none;
-        width: 150px;
+        width: 150px;  // Zostawiamy przycisk "login" w domyślnych rozmiarach
         height: 50px;
         cursor: pointer;
         transition: background-image 0.3s ease;
-      }
-
-      .image-button-login {
+        padding: 0 10px;
         background: url("./assets/loginUC.png") no-repeat center center;
         background-size: cover;
-        
+
         &:hover {
           background: url("./assets/loginCC.png") no-repeat center center;
           background-size: cover;
         }
       }
 
-      .image-button-register {
-        background: url("./assets/registerUC.png") no-repeat center center;
+      #register {
+        margin: 3px;
+        border: none;
+        width: 200px;  // Zwiększamy szerokość przycisku "continue" o 200%
+        height: 100px; // Zwiększamy wysokość przycisku "continue" o 200%
+        cursor: pointer;
+        transition: background-image 0.3s ease;
+        padding: 0 10px;
+        background: url("./assets/continueUC.png") no-repeat center center;
         background-size: cover;
 
         &:hover {
-          background: url("./assets/registerCC.png") no-repeat center center;
+          background: url("./assets/continueCC.png") no-repeat center center;
           background-size: cover;
         }
       }

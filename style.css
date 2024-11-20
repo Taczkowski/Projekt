@@ -17,7 +17,7 @@
 .snowflake {
   position: fixed;
   top: -10%;
-  z-index: 9999;
+  z-index: -1;
   user-select: none;
   cursor: default;
   -webkit-user-select: none;
@@ -82,6 +82,11 @@
   font-family: "Courier New", Courier, monospace;
 }
 
+header {
+  position: relative;
+  z-index: 100;
+}
+
 body {
   background-color: rgb(231, 217, 188);
 }
@@ -98,6 +103,7 @@ main > div {
   border: solid rgb(146, 77, 77);
 }
 main > div section {
+  z-index: 9;
   text-align: center;
 }
 main > div section > div {
@@ -107,30 +113,34 @@ main > div section > div {
   align-items: center;
   height: 100%;
 }
-main > div section > div #login, main > div section > div #register {
+main > div section > div #login {
   margin: 3px;
-}
-main > div section > div .image-button-login, main > div section > div .image-button-register {
   border: none;
   width: 150px;
   height: 50px;
   cursor: pointer;
   transition: background-image 0.3s ease;
-}
-main > div section > div .image-button-login {
+  padding: 0 10px;
   background: url("./assets/loginUC.png") no-repeat center center;
   background-size: cover;
 }
-main > div section > div .image-button-login:hover {
+main > div section > div #login:hover {
   background: url("./assets/loginCC.png") no-repeat center center;
   background-size: cover;
 }
-main > div section > div .image-button-register {
-  background: url("./assets/registerUC.png") no-repeat center center;
+main > div section > div #register {
+  margin: 3px;
+  border: none;
+  width: 200px;
+  height: 100px;
+  cursor: pointer;
+  transition: background-image 0.3s ease;
+  padding: 0 10px;
+  background: url("./assets/continueUC.png") no-repeat center center;
   background-size: cover;
 }
-main > div section > div .image-button-register:hover {
-  background: url("./assets/registerCC.png") no-repeat center center;
+main > div section > div #register:hover {
+  background: url("./assets/continueCC.png") no-repeat center center;
   background-size: cover;
 }
 main > div section h2 {
