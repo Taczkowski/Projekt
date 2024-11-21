@@ -81,7 +81,7 @@ main {
       #login {
         margin: 3px;
         border: none;
-        width: 150px;  // Zostawiamy przycisk "login" w domyślnych rozmiarach
+        width: 150px;  
         height: 50px;
         cursor: pointer;
         transition: background-image 0.3s ease;
@@ -98,8 +98,8 @@ main {
       #register {
         margin: 3px;
         border: none;
-        width: 200px;  // Zwiększamy szerokość przycisku "continue" o 200%
-        height: 100px; // Zwiększamy wysokość przycisku "continue" o 200%
+        width: 200px;  
+        height: 100px; 
         cursor: pointer;
         transition: background-image 0.3s ease;
         padding: 0 10px;
