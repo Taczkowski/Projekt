@@ -1,120 +1,150 @@
+$snowflake-size: 50px;
 $primary-color: rgb(189, 141, 141);
 $secondary-color: rgb(146, 77, 77);
 $background-color: rgb(231, 217, 188);
-
-@keyframes snowflakes-fall {
-  0% { top: -10%; }
-  100% { top: 100%; }
-}
-
-@keyframes snowflakes-shake {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(80px); }
-}
-
-.snowflake {
-  position: fixed;
-  top: -10%;
-  z-index: -1;
-  user-select: none;
-  cursor: default;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  animation: snowflakes-fall 10s linear infinite, snowflakes-shake 3s ease-in-out infinite;
-  -webkit-animation: snowflakes-fall 10s linear infinite, snowflakes-shake 3s ease-in-out infinite;
-
-  &:nth-of-type(0) { left: 1%; animation-delay: 0s, 0s; }
-  &:nth-of-type(1) { left: 5%; animation-delay: 1s, 1s; }
-  &:nth-of-type(2) { left: 20%; animation-delay: 6s, 0.5s; }
-  &:nth-of-type(3) { left: 30%; animation-delay: 4s, 2s; }
-  &:nth-of-type(4) { left: 40%; animation-delay: 2s, 2s; }
-  &:nth-of-type(5) { left: 50%; animation-delay: 8s, 3s; }
-  &:nth-of-type(6) { left: 60%; animation-delay: 6s, 2s; }
-  &:nth-of-type(7) { left: 70%; animation-delay: 2s, 1s; }
-  &:nth-of-type(8) { left: 80%; animation-delay: 1s, 0s; }
-  &:nth-of-type(9) { left: 95%; animation-delay: 3s, 1s; }
-  &:nth-of-type(10) { left: 25%; animation-delay: 2s, 0s; }
-  &:nth-of-type(11) { left: 67%; animation-delay: 4s, 2s; }
-}
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "Courier New", Courier, monospace;
 }
-header{
-  position: relative;
-  z-index: 100;
-}
+
 body {
   background-color: $background-color;
+  font-family: "Courier New", Courier, monospace;
+  overflow-x: hidden;
+}
+
+header {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 20px;
+
+  .logo-container {
+    position: relative;  // Kontener dla logo i pizzy
+
+    .logo {
+      max-width: 300px;   // Ustawiamy szerokość logo
+      z-index: 10;        // Logo będzie wyżej niż pizza
+    }
+
+    .pizza {
+      position: absolute; // Pizza nałożona na logo
+      top: 50%;            // Ustawiamy na środku logo
+      left: 50%;
+      transform: translate(-50%, -50%); // Centrujemy obrazek
+      max-width: 350px;    // Zwiększamy szerokość pizzy
+      z-index: 5;          // Pizza będzie za logo
+      transition: transform 0.5s ease; // Dodajemy płynne przejście dla efektu obrotu
+    }
+
+    .pizza:hover {
+      transform: translate(-50%, -50%) rotate(360deg); // Obrót o 360 stopni po najechaniu
+    }
+  }
 }
 
 main {
   text-align: center;
 
-
   > div {
-
-    margin: 10px 200px 100px 200px;
-    padding: 100px 0;
+    margin: 10px auto;
+    padding: 40px;
     text-align: center;
     background-color: $primary-color;
     border-radius: 30px;
     border: solid $secondary-color;
-  }
+    width: 70%;
 
-  > div section {
-    z-index: 9;
-    text-align: center;
+    section {
+      z-index: 9;
 
-    > div {
-
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-
-      #login {
-        margin: 3px;
-        border: none;
-        width: 150px;  
-        height: 50px;
-        cursor: pointer;
-        transition: background-image 0.3s ease;
-        padding: 0 10px;
-        background: url("./assets/loginUC.png") no-repeat center center;
-        background-size: cover;
-
-        &:hover {
-          background: url("./assets/loginCC.png") no-repeat center center;
-          background-size: cover;
-        }
+      h2 {
+        padding: 20px;
+        color: white;
       }
 
-      #register {
-        margin: 3px;
-        border: none;
-        width: 200px;  
-        height: 100px; 
-        cursor: pointer;
-        transition: background-image 0.3s ease;
-        padding: 0 10px;
-        background: url("./assets/continueUC.png") no-repeat center center;
-        background-size: cover;
+      article {
+        padding: 10px;
+        color: white;
+        font-size: 1.2em;
+      }
 
-        &:hover {
-          background: url("./assets/continueCC.png") no-repeat center center;
+      div {
+        margin-top: 20px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        #login {
+          margin: 10px 0;
+          border: none;
+          width: 150px;
+          height: 50px;
+          cursor: pointer;
+          background: url("./assets/loginUC.png") no-repeat center center;
           background-size: cover;
+
+          &:hover {
+            background: url("./assets/loginCC.png") no-repeat center center;
+            background-size: cover;
+          }
+        }
+
+        #register {
+          margin: 10px 0;
+          border: none;
+          width: 200px;
+          height: 100px;
+          cursor: pointer;
+          background: url("./assets/continueUC.png") no-repeat center center;
+          background-size: cover;
+
+          &:hover {
+            background: url("./assets/continueCC.png") no-repeat center center;
+            background-size: cover;
+          }
         }
       }
     }
   }
+}
 
-  > div section h2 {
-    padding: 50px;
+footer {
+  text-align: center;
+  padding: 10px;
+  background-color: $secondary-color;
+  color: white;
+}
+
+.snowflakes {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.snowflake {
+  position: absolute;
+  top: -$snowflake-size;
+  animation: fall linear infinite;
+
+  img {
+    width: $snowflake-size;
+    height: $snowflake-size;
+  }
+}
+
+@keyframes fall {
+  from {
+    transform: translateY(-$snowflake-size);
+  }
+  to {
+    transform: translateY(100vh);
   }
 }

@@ -1,148 +1,131 @@
-@keyframes snowflakes-fall {
-  0% {
-    top: -10%;
-  }
-  100% {
-    top: 100%;
-  }
-}
-@keyframes snowflakes-shake {
-  0%, 100% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(80px);
-  }
-}
-.snowflake {
-  position: fixed;
-  top: -10%;
-  z-index: -1;
-  user-select: none;
-  cursor: default;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  animation: snowflakes-fall 10s linear infinite, snowflakes-shake 3s ease-in-out infinite;
-  -webkit-animation: snowflakes-fall 10s linear infinite, snowflakes-shake 3s ease-in-out infinite;
-}
-.snowflake:nth-of-type(0) {
-  left: 1%;
-  animation-delay: 0s, 0s;
-}
-.snowflake:nth-of-type(1) {
-  left: 5%;
-  animation-delay: 1s, 1s;
-}
-.snowflake:nth-of-type(2) {
-  left: 20%;
-  animation-delay: 6s, 0.5s;
-}
-.snowflake:nth-of-type(3) {
-  left: 30%;
-  animation-delay: 4s, 2s;
-}
-.snowflake:nth-of-type(4) {
-  left: 40%;
-  animation-delay: 2s, 2s;
-}
-.snowflake:nth-of-type(5) {
-  left: 50%;
-  animation-delay: 8s, 3s;
-}
-.snowflake:nth-of-type(6) {
-  left: 60%;
-  animation-delay: 6s, 2s;
-}
-.snowflake:nth-of-type(7) {
-  left: 70%;
-  animation-delay: 2s, 1s;
-}
-.snowflake:nth-of-type(8) {
-  left: 80%;
-  animation-delay: 1s, 0s;
-}
-.snowflake:nth-of-type(9) {
-  left: 95%;
-  animation-delay: 3s, 1s;
-}
-.snowflake:nth-of-type(10) {
-  left: 25%;
-  animation-delay: 2s, 0s;
-}
-.snowflake:nth-of-type(11) {
-  left: 67%;
-  animation-delay: 4s, 2s;
-}
-
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "Courier New", Courier, monospace;
-}
-
-header {
-  position: relative;
-  z-index: 100;
 }
 
 body {
   background-color: rgb(231, 217, 188);
+  font-family: "Courier New", Courier, monospace;
+  overflow-x: hidden;
+}
+
+header {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 20px;
+}
+header .logo-container {
+  position: relative;
+}
+header .logo-container .logo {
+  max-width: 300px;
+  z-index: 10;
+}
+header .logo-container .pizza {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 350px;
+  z-index: 5;
+  transition: transform 0.5s ease;
+}
+header .logo-container .pizza:hover {
+  transform: translate(-50%, -50%) rotate(360deg);
 }
 
 main {
   text-align: center;
 }
 main > div {
-  margin: 10px 200px 100px 200px;
-  padding: 100px 0;
+  margin: 10px auto;
+  padding: 40px;
   text-align: center;
   background-color: rgb(189, 141, 141);
   border-radius: 30px;
   border: solid rgb(146, 77, 77);
+  width: 70%;
 }
 main > div section {
   z-index: 9;
-  text-align: center;
 }
-main > div section > div {
+main > div section h2 {
+  padding: 20px;
+  color: white;
+}
+main > div section article {
+  padding: 10px;
+  color: white;
+  font-size: 1.2em;
+}
+main > div section div {
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 100%;
 }
-main > div section > div #login {
-  margin: 3px;
+main > div section div #login {
+  margin: 10px 0;
   border: none;
   width: 150px;
   height: 50px;
   cursor: pointer;
-  transition: background-image 0.3s ease;
-  padding: 0 10px;
   background: url("./assets/loginUC.png") no-repeat center center;
   background-size: cover;
 }
-main > div section > div #login:hover {
+main > div section div #login:hover {
   background: url("./assets/loginCC.png") no-repeat center center;
   background-size: cover;
 }
-main > div section > div #register {
-  margin: 3px;
+main > div section div #register {
+  margin: 10px 0;
   border: none;
   width: 200px;
   height: 100px;
   cursor: pointer;
-  transition: background-image 0.3s ease;
-  padding: 0 10px;
   background: url("./assets/continueUC.png") no-repeat center center;
   background-size: cover;
 }
-main > div section > div #register:hover {
+main > div section div #register:hover {
   background: url("./assets/continueCC.png") no-repeat center center;
   background-size: cover;
 }
-main > div section h2 {
-  padding: 50px;
+
+footer {
+  text-align: center;
+  padding: 10px;
+  background-color: rgb(146, 77, 77);
+  color: white;
+}
+
+.snowflakes {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.snowflake {
+  position: absolute;
+  top: -50px;
+  animation: fall linear infinite;
+}
+.snowflake img {
+  width: 50px;
+  height: 50px;
+}
+
+@keyframes fall {
+  from {
+    transform: translateY(-50px);
+  }
+  to {
+    transform: translateY(100vh);
+  }
 }/*# sourceMappingURL=style.css.map */
