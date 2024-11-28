@@ -30,10 +30,6 @@ header .logo-container .pizza {
   transform: translate(-50%, -50%);
   max-width: 350px;
   z-index: 5;
-  transition: transform 0.5s ease;
-}
-header .logo-container .pizza:hover {
-  transform: translate(-50%, -50%) rotate(360deg);
 }
 
 main {
@@ -128,4 +124,78 @@ footer {
   to {
     transform: translateY(100vh);
   }
+}
+.pizza-animation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150px;
+  height: 150px;
+  opacity: 1;
+  pointer-events: none;
+  z-index: 9999;
+  animation: pizzaGrow 6s ease-out forwards;
+}
+
+@keyframes pizzaGrow {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(15);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(15);
+    opacity: 0;
+  }
+}
+.pizza-animation img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.login-form {
+  margin: 20px 0;
+  text-align: left;
+}
+
+.login-form label {
+  display: block;
+  font-size: 1.1em;
+  margin-bottom: 5px;
+  color: rgb(189, 141, 141);
+}
+
+.login-form input {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.2em;
+  border: 2px solid rgb(146, 77, 77);
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+.login-form input .login-form input:focus {
+  border-color: rgb(189, 141, 141);
+  outline: none;
+  background-color: #fafafa;
+}
+.login-form input button {
+  padding: 10px 20px;
+  font-size: 1.1em;
+  border: none;
+  background-color: rgb(146, 77, 77);
+  color: white;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: background-color 0.3s ease-in-out;
+}
+.login-form input button:hover {
+  background-color: rgb(116, 145, 116);
 }/*# sourceMappingURL=style.css.map */
