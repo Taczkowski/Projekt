@@ -8,6 +8,7 @@ body {
   background-color: rgb(231, 217, 188);
   font-family: "Courier New", Courier, monospace;
   overflow-x: hidden;
+  margin: 0;
 }
 
 header {
@@ -18,12 +19,16 @@ header {
 }
 header .logo-container {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
-header .logo-container .logo {
+header .logo {
   max-width: 300px;
   z-index: 10;
 }
-header .logo-container .pizza {
+header .pizza {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -35,6 +40,7 @@ header .logo-container .pizza {
 main {
   text-align: center;
 }
+
 main > div {
   margin: 10px auto;
   padding: 40px;
@@ -44,25 +50,30 @@ main > div {
   border: solid rgb(146, 77, 77);
   width: 70%;
 }
-main > div section {
+
+section {
   z-index: 9;
 }
-main > div section h2 {
+
+h2 {
   padding: 20px;
   color: white;
 }
-main > div section article {
+
+article {
   padding: 10px;
   color: white;
   font-size: 1.2em;
 }
-main > div section div {
+
+div {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-main > div section div #login {
+
+#login {
   margin: 10px 0;
   border: none;
   width: 150px;
@@ -71,11 +82,13 @@ main > div section div #login {
   background: url("./assets/loginUC.png") no-repeat center center;
   background-size: cover;
 }
-main > div section div #login:hover {
+
+#login:hover {
   background: url("./assets/loginCC.png") no-repeat center center;
   background-size: cover;
 }
-main > div section div #register {
+
+#continue {
   margin: 10px 0;
   border: none;
   width: 200px;
@@ -84,16 +97,91 @@ main > div section div #register {
   background: url("./assets/continueUC.png") no-repeat center center;
   background-size: cover;
 }
-main > div section div #register:hover {
+
+#continue:hover {
   background: url("./assets/continueCC.png") no-repeat center center;
   background-size: cover;
 }
 
-footer {
+.login-form-container {
+  margin: 10px auto;
+  padding: 40px;
   text-align: center;
-  padding: 10px;
-  background-color: rgb(146, 77, 77);
-  color: white;
+  background-color: rgb(189, 141, 141);
+  border-radius: 30px;
+  width: 70%;
+}
+
+.login-form {
+  margin-bottom: 20px;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.2em;
+  border: 2px solid rgb(146, 77, 77);
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.login-form input:focus {
+  border-color: rgb(189, 141, 141);
+  outline: none;
+  background-color: #fafafa;
+}
+
+#submit {
+  width: 100%;
+  padding: 15px 0;
+  font-size: 1.2em;
+  background: url("./assets/loginUC.png") no-repeat center center;
+  background-size: cover;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+#submit:hover {
+  background: url("./assets/loginCC.png") no-repeat center center;
+  background-size: cover;
+}
+
+@keyframes pizzaGrowRotate {
+  0% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(15) rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(15) rotate(360deg);
+    opacity: 0;
+  }
+}
+.pizza-animation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150px;
+  height: 150px;
+  opacity: 1;
+  pointer-events: none;
+  z-index: 9999;
+  animation: pizzaGrowRotate 6s ease-out forwards;
+}
+
+.pizza-animation img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .snowflakes {
@@ -111,6 +199,7 @@ footer {
   position: absolute;
   top: -50px;
   animation: fall linear infinite;
+  animation-duration: 6s;
 }
 .snowflake img {
   width: 50px;
@@ -120,82 +209,63 @@ footer {
 @keyframes fall {
   from {
     transform: translateY(-50px);
-  }
-  to {
-    transform: translateY(100vh);
-  }
-}
-.pizza-animation {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 150px;
-  height: 150px;
-  opacity: 1;
-  pointer-events: none;
-  z-index: 9999;
-  animation: pizzaGrow 6s ease-out forwards;
-}
-
-@keyframes pizzaGrow {
-  0% {
-    transform: translate(-50%, -50%) scale(1);
     opacity: 1;
   }
   50% {
-    transform: translate(-50%, -50%) scale(15);
-    opacity: 1;
+    opacity: 0.7;
   }
-  100% {
-    transform: translate(-50%, -50%) scale(15);
+  to {
+    transform: translateY(110vh);
     opacity: 0;
   }
 }
-.pizza-animation img {
-  width: 100%;
-  height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+@media (max-width: 768px) {
+  header .logo-container {
+    flex-direction: column;
+  }
+  .logo {
+    max-width: 200px;
+  }
+  .pizza {
+    max-width: 250px;
+  }
+  main > div {
+    width: 90%;
+    padding: 20px;
+  }
+  .login-form-container {
+    width: 90%;
+  }
+  .login-form input {
+    font-size: 1em;
+  }
+  #submit {
+    font-size: 1em;
+  }
 }
-
-.login-form {
-  margin: 20px 0;
-  text-align: left;
-}
-
-.login-form label {
-  display: block;
-  font-size: 1.1em;
-  margin-bottom: 5px;
-  color: rgb(189, 141, 141);
-}
-
-.login-form input {
-  width: 100%;
-  padding: 12px;
-  font-size: 1.2em;
-  border: 2px solid rgb(146, 77, 77);
-  border-radius: 10px;
-  background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease-in-out;
-}
-.login-form input .login-form input:focus {
-  border-color: rgb(189, 141, 141);
-  outline: none;
-  background-color: #fafafa;
-}
-.login-form input button {
-  padding: 10px 20px;
-  font-size: 1.1em;
-  border: none;
-  background-color: rgb(146, 77, 77);
-  color: white;
-  cursor: pointer;
-  border-radius: 20px;
-  transition: background-color 0.3s ease-in-out;
-}
-.login-form input button:hover {
-  background-color: rgb(116, 145, 116);
+@media (max-width: 480px) {
+  header .logo-container {
+    align-items: center;
+  }
+  .logo {
+    max-width: 150px;
+  }
+  .pizza {
+    max-width: 200px;
+  }
+  main > div {
+    width: 95%;
+    padding: 10px;
+  }
+  .login-form-container {
+    width: 95%;
+  }
+  .login-form input {
+    padding: 10px;
+    font-size: 1.1em;
+  }
+  #submit {
+    padding: 12px 0;
+    font-size: 1.1em;
+  }
 }/*# sourceMappingURL=style.css.map */
