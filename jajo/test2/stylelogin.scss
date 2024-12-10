@@ -1,0 +1,109 @@
+$primary-color: #3498db;
+$secondary-color: #2ecc71;
+$error-color: #e74c3c;
+$background-color: #f4f6f8;
+$button-color: #2980b9;
+$button-hover-color: darken($button-color, 10%);
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: $background-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    background-color: #fff;
+    padding: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+
+    h1 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        font-size: 2rem;
+        color: $primary-color;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+
+        .input-group {
+            margin-bottom: 1.5rem;
+
+            label {
+                font-size: 0.9rem;
+                color: #333;
+                margin-bottom: 0.5rem;
+                display: block;
+            }
+
+            input {
+                width: 100%;
+                padding: 0.8rem;
+                font-size: 1rem;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                outline: none;
+                transition: border-color 0.3s ease;
+
+                &:focus {
+                    border-color: $primary-color;
+                }
+            }
+        }
+
+        .btn {
+            padding: 1rem;
+            background-color: $button-color;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+                background-color: $button-hover-color;
+            }
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+
+    p {
+        text-align: center;
+        margin-top: 1rem;
+        font-size: 0.9rem;
+
+        a {
+            color: $primary-color;
+            text-decoration: none;
+            font-weight: bold;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+.error-message {
+    color: $error-color;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    text-align: center;
+}

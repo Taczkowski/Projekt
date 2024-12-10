@@ -1,0 +1,7 @@
+[
+    { "Nazwaproduktu": "Margherita", "Cena": 20.00 },
+    { "Nazwaproduktu": "Pepperoni", "Cena": 25.00 },
+    { "Nazwaproduktu": "Hawajska", "Cena": 30.00 },
+    { "Nazwaproduktu": "Wegetariańska", "Cena": 28.00 },
+    { "Nazwaproduktu": "Mięsna", "Cena": 35.00 }
+]

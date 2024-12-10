@@ -1,0 +1,50 @@
+[
+    {
+        "IDkonta": 2,
+        "IDproduktu": "1",
+        "Cena": "20.99",
+        "Zrealizowano": 0
+    },
+    {
+        "IDkonta": 3,
+        "IDproduktu": "2",
+        "Cena": "15.49",
+        "Zrealizowano": 0
+    },
+    {
+        "IDkonta": 7,
+        "IDproduktu": "2",
+        "Cena": "200",
+        "Zrealizowano": 0
+    },
+    {
+        "IDkonta": 7,
+        "IDproduktu": "2",
+        "Cena": "100",
+        "Zrealizowano": 0
+    },
+    {
+        "IDkonta": 7,
+        "IDproduktu": "2",
+        "Cena": "2",
+        "Zrealizowano": 0
+    },
+    {
+        "IDkonta": 7,
+        "IDproduktu": "4",
+        "Cena": "3",
+        "Zrealizowano": 0
+    },
+    {
+        "IDkonta": 7,
+        "IDproduktu": "4",
+        "Cena": "3",
+        "Zrealizowano": 0
+    },
+    {
+        "IDkonta": 7,
+        "IDproduktu": "4",
+        "Cena": "3",
+        "Zrealizowano": 0
+    }
+]
