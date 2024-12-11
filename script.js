@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginButton = document.getElementById("login");
     const mainDiv = document.querySelector("main > div");
     const snowflakeContainer = document.querySelector(".snowflakes");
+    const boxes = document.querySelectorAll(".box");
 
     const ingredients = [
         './assets/Ingredients_Pepperoni.png',
@@ -48,159 +49,130 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setInterval(createSnowflake, 2000);
 
-    loginButton.addEventListener("click", () => {
-        const newPizza = document.createElement("img");
-        newPizza.src = "./assets/HSPIZZA.png";
-        newPizza.alt = "Pizza Animation";
-        newPizza.classList.add("pizza-animation");
-        document.body.appendChild(newPizza);
+    function animateBoxes() {
+        return new Promise((resolve) => {
+            boxes.forEach((box) => {
+                box.style.transition = "transform 1s ease-in-out";
+                box.style.transform = "translate(0, 0) rotate(0deg) scale(1)";
+            });
+            setTimeout(() => resolve(), 1000); // Czas trwania animacji
+        });
+    }
 
+    function resetBoxes() {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                boxes.forEach((box) => {
+                    if (box.classList.contains("lefttop")) box.style.transform = "translate(-150vw, -150vh) rotate(-45deg) scale(0.5)";
+                    if (box.classList.contains("left")) box.style.transform = "translate(-225vw, 0) rotate(-30deg) scale(0.5)";
+                    if (box.classList.contains("leftbottom")) box.style.transform = "translate(-150vw, 150vh) rotate(-15deg) scale(0.5)";
+                    if (box.classList.contains("righttop")) box.style.transform = "translate(150vw, -150vh) rotate(45deg) scale(0.5)";
+                    if (box.classList.contains("right")) box.style.transform = "translate(225vw, 0) rotate(30deg) scale(0.5)";
+                    if (box.classList.contains("rightbottom")) box.style.transform = "translate(150vw, 150vh) rotate(15deg) scale(0.5)";
+                });
+                resolve();
+            }, 300); // Czas powrotu elementów
+        });
+    }
+
+    function addButtonAnimation(button, animationClass) {
+        button.classList.add(animationClass);
         setTimeout(() => {
-            const loginFormContainer = document.createElement("div");
-            loginFormContainer.style.margin = "10px auto";
-            loginFormContainer.style.padding = "40px";
-            loginFormContainer.style.textAlign = "center";
-            loginFormContainer.style.backgroundColor = "#bd8d8d"; 
-            loginFormContainer.style.borderRadius = "30px";
-            loginFormContainer.style.width = "70%";
+            button.classList.remove(animationClass);
+        }, 1000);
+    }
 
-            const loginForm = `
-                <div class="login-form">
-                    <label for="username"></label>
-                    <input type="text" id="username" placeholder="Wpisz login">
-                </div>
-                <div class="login-form">
-                    <label for="password"></label>
-                    <input type="password" id="password" placeholder="Wpisz hasło">
-                </div>
-                <div>
-                    <button id="submit" type="button"></button>
-                </div>
-            `;
+    function displayLoginForm() {
+        const loginFormContainer = document.createElement("div");
+        loginFormContainer.style.margin = "10px auto";
+        loginFormContainer.style.padding = "40px";
+        loginFormContainer.style.textAlign = "center";
+        loginFormContainer.style.backgroundColor = "#bd8d8d";
+        loginFormContainer.style.borderRadius = "30px";
+        loginFormContainer.style.width = "70%";
 
-            loginFormContainer.innerHTML = loginForm;
+        const loginForm = `
+            <div class="login-form">
+                <label for="username"></label>
+                <input type="text" id="username" placeholder="Wpisz login">
+            </div>
+            <div class="login-form">
+                <label for="password"></label>
+                <input type="password" id="password" placeholder="Wpisz hasło">
+            </div>
+            <div>
+                <button id="submit" type="button"></button>
+            </div>
+            <div>
+                <button id="register" type="button"></button>
+                <button id="previousOne" type="button"></button>
+            </div>
+        `;
 
-            const secondDiv = document.createElement("div");
-            secondDiv.style.marginTop = "20px";
+        loginFormContainer.innerHTML = loginForm;
+        mainDiv.innerHTML = '';
+        mainDiv.appendChild(loginFormContainer);
 
-            const registerButtonDiv = document.createElement("button");
-            registerButtonDiv.style.backgroundSize = "contain";
-            registerButtonDiv.style.backgroundPosition = "center";
-            registerButtonDiv.style.backgroundRepeat = "no-repeat";
-            registerButtonDiv.style.width = "200px";
-            registerButtonDiv.style.height = "60px";
-            registerButtonDiv.style.padding = "10px 20px";
-            registerButtonDiv.style.cursor = "pointer";
-            registerButtonDiv.style.backgroundColor = "#f2b97b";
-            registerButtonDiv.style.border = "none";
-            registerButtonDiv.style.borderRadius = "10px";
+        const registerButton = document.getElementById("register");
+        registerButton.addEventListener("click", handleRegisterClick);
+    }
 
-            registerButtonDiv.style.background = "url('./assets/newAccountUC.png') no-repeat center center";
-            registerButtonDiv.style.backgroundSize = "cover";
+    function displayRegistrationForm() {
+        const registrationFormContainer = document.createElement("div");
+        registrationFormContainer.style.margin = "10px auto";
+        registrationFormContainer.style.padding = "40px";
+        registrationFormContainer.style.textAlign = "center";
+        registrationFormContainer.style.backgroundColor = "#bd8d8d";
+        registrationFormContainer.style.borderRadius = "30px";
+        registrationFormContainer.style.width = "70%";
 
-            registerButtonDiv.style.transition = "background-color 0.3s ease-in-out"; 
-            registerButtonDiv.style.borderRadius = "10px";
+        const registrationForm = `
+            <div class="login-form">
+                <label for="firstName"></label>
+                <input type="text" id="firstName" placeholder="Imię">
+            </div>
+            <div class="login-form">
+                <label for="lastName"></label>
+                <input type="text" id="lastName" placeholder="Nazwisko">
+            </div>
+            <div class="login-form">
+                <label for="email"></label>
+                <input type="email" id="email" placeholder="Email">
+            </div>
+            <div class="login-form">
+                <label for="password"></label>
+                <input type="password" id="password" placeholder="Hasło">
+            </div>
+            <div>
+                <button id="createAccount" type="button"></button>
+                <button id="previousTwo" type="button"></button>
+            </div>
+        `;
 
-            registerButtonDiv.addEventListener("mouseover", () => {
-                registerButtonDiv.style.background = "url('./assets/newAccountCC.png') no-repeat center center";
-                registerButtonDiv.style.backgroundSize = "cover";
-            });
+        registrationFormContainer.innerHTML = registrationForm;
+        mainDiv.innerHTML = '';
+        mainDiv.appendChild(registrationFormContainer);
 
-            registerButtonDiv.addEventListener("mouseout", () => {
-                registerButtonDiv.style.background = "url('./assets/newAccountUC.png') no-repeat center center";
-                registerButtonDiv.style.backgroundSize = "cover";
-            });
+    }
 
-            registerButtonDiv.addEventListener("click", () => {
-                const registrationFormContainer = document.createElement("div");
-                registrationFormContainer.style.margin = "10px auto";
-                registrationFormContainer.style.padding = "40px";
-                registrationFormContainer.style.textAlign = "center";
-                registrationFormContainer.style.backgroundColor = "#bd8d8d"; 
-                registrationFormContainer.style.borderRadius = "30px";
-                registrationFormContainer.style.width = "70%";
+    async function handleRegisterClick() {
+        const registerButton = document.getElementById("register");
+        addButtonAnimation(registerButton, "animate__rubberBand");
+        snowflakeContainer.style.display = "block";
 
-                const registrationForm = `
-                    <div class="register-form">
-                        <label for="firstName"></label>
-                        <input type="text" id="firstName" placeholder="Imię">
-                    </div>
-                    <div class="register-form">
-                        <label for="lastName"></label>
-                        <input type="text" id="lastName" placeholder="Nazwisko">
-                    </div>
-                    <div class="register-form">
-                        <label for="email"></label>
-                        <input type="email" id="email" placeholder="Email">
-                    </div>
-                    <div class="register-form">
-                    <div>
-                        <button id="registerSubmit" type="button"></button>
-                    </div>
-                `;
+        await animateBoxes();
+        await resetBoxes();
 
-                registrationFormContainer.innerHTML = registrationForm;
+        displayRegistrationForm(); // Wyświetla formularz rejestracji
+    }
 
-                mainDiv.innerHTML = '';
-                mainDiv.appendChild(registrationFormContainer);
+    loginButton.addEventListener("click", async () => {
+        addButtonAnimation(loginButton, "animate__rubberBand");
+        snowflakeContainer.style.display = "block";
 
-                const registerInputs = document.querySelectorAll('.register-form input');
-                registerInputs.forEach(input => {
-                    input.style.marginBottom = "15px";
-                    input.style.padding = "10px";
-                    input.style.width = "100%";
-                    input.style.border = "1px solid #ccc";
-                    input.style.borderRadius = "5px";
-                    input.style.fontSize = "16px";
-                    input.style.marginTop = "10px";
-                });
+        await animateBoxes();
+        await resetBoxes();
 
-                const registerSubmitButton = document.getElementById("registerSubmit");
-                registerSubmitButton.style.border = "none";
-                registerSubmitButton.style.width = "150px";
-                registerSubmitButton.style.height = "50px";
-                registerSubmitButton.style.cursor = "pointer";
-                registerSubmitButton.style.background = "url('./assets/rejestrUC.png') no-repeat center center";
-                registerSubmitButton.style.backgroundSize = "cover";
-                registerSubmitButton.style.transition = "background-color 0.3s ease-in-out"; 
-                registerSubmitButton.style.borderRadius = "10px";
-
-                registerSubmitButton.addEventListener("mouseover", () => {
-                    registerSubmitButton.style.background = "url('./assets/rejestrCC.png') no-repeat center center";
-                    registerSubmitButton.style.backgroundSize = "cover";
-                });
-
-                registerSubmitButton.addEventListener("mouseout", () => {
-                    registerSubmitButton.style.background = "url('./assets/rejestrUC.png') no-repeat center center";
-                    registerSubmitButton.style.backgroundSize = "cover";
-                });
-            });
-
-            secondDiv.appendChild(registerButtonDiv);
-            loginFormContainer.appendChild(secondDiv);
-
-            mainDiv.innerHTML = ''; 
-            mainDiv.appendChild(loginFormContainer);
-
-            const submitButton = document.getElementById("submit");
-            submitButton.style.border = "none";
-            submitButton.style.width = "150px";
-            submitButton.style.height = "50px";
-            submitButton.style.cursor = "pointer";
-            submitButton.style.background = "url('./assets/loginUC.png') no-repeat center center";
-            submitButton.style.backgroundSize = "cover";
-            submitButton.style.transition = "background-color 0.3s ease-in-out"; 
-            submitButton.style.borderRadius = "10px";
-
-            submitButton.addEventListener("mouseover", () => {
-                submitButton.style.background = "url('./assets/loginCC.png') no-repeat center center";
-                submitButton.style.backgroundSize = "cover";
-            });
-
-            submitButton.addEventListener("mouseout", () => {
-                submitButton.style.background = "url('./assets/loginUC.png') no-repeat center center";
-                submitButton.style.backgroundSize = "cover";
-            });
-        }, 2000);
+        displayLoginForm();
     });
 });

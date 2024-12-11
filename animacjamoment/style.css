@@ -1,0 +1,56 @@
+/* Ukryj paski przewijania */
+html, body {
+  height: 100%;      /* Upewnij się, że wysokość jest 100% */
+  margin: 0;         /* Usuń marginesy */
+  overflow: hidden;  /* Ukryj paski przewijania */
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;     /* Ustaw wysokość na 100% okna */
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+}
+
+#startButton {
+  text-align: center;
+  padding: 20px 40px;
+  font-size: 24px;
+  cursor: pointer;
+  margin-bottom: 50px;
+}
+
+.container {
+  position: relative;
+  width: 7500px; /* Zwiększona szerokość kontenera */
+  height: 7500px; /* Zwiększona wysokość kontenera */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 100px; /* Większy odstęp między elementami */
+  overflow: visible; /* Pozwól na widoczność elementów wychodzących poza kontener */
+}
+
+.box {
+  position: absolute;
+  width: 30000px; /* Zwiększona szerokość elementów */
+  height: 30000px; /* Zwiększona wysokość elementów */
+  transition: all 1s ease;
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: visible;
+}
+
+/* Początkowe pozycje elementów, uwzględniające większy rozmiar */
+.lefttop { transform: translate(-15000px, -15000px); }
+.left { transform: translate(-22500px, 0); }
+.leftbottom { transform: translate(-15000px, 15000px); }
+.righttop { transform: translate(15000px, -15000px); }
+.right { transform: translate(22500px, 0); }
+.rightbottom { transform: translate(15000px, 15000px); }
