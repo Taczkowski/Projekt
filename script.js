@@ -4,6 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const snowflakeContainer = document.querySelector(".snowflakes");
     const boxes = document.querySelectorAll(".box");
 
+    // Zachowaj oryginalną zawartość głównej strony
+    const originalMainContent = mainDiv.innerHTML;
+
+    let currentView = "main"; // Zmienna, która przechowuje aktualny widok ("main", "login", "register")
+
     const ingredients = [
         './assets/Ingredients_Pepperoni.png',
         './assets/Ingredients_Bell-Pepper.png',
@@ -82,6 +87,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 1000);
     }
 
+    function displayMainPage() {
+        mainDiv.innerHTML = originalMainContent;
+        currentView = "main";
+        attachMainListeners(); // Przywróć event listener'y na głównej stronie
+    }
+
     function displayLoginForm() {
         const loginFormContainer = document.createElement("div");
         loginFormContainer.style.margin = "10px auto";
@@ -110,9 +121,13 @@ document.addEventListener("DOMContentLoaded", () => {
         loginFormContainer.innerHTML = loginForm;
         mainDiv.innerHTML = '';
         mainDiv.appendChild(loginFormContainer);
+        currentView = "login";
 
         const registerButton = document.getElementById("register");
         registerButton.addEventListener("click", handleRegisterClick);
+
+        const previousOneButton = document.getElementById("previousOne");
+        previousOneButton.addEventListener("click", displayMainPage);
     }
 
     function displayRegistrationForm() {
@@ -150,7 +165,10 @@ document.addEventListener("DOMContentLoaded", () => {
         registrationFormContainer.innerHTML = registrationForm;
         mainDiv.innerHTML = '';
         mainDiv.appendChild(registrationFormContainer);
+        currentView = "register";
 
+        const previousTwoButton = document.getElementById("previousTwo");
+        previousTwoButton.addEventListener("click", displayLoginForm);
     }
 
     async function handleRegisterClick() {
@@ -161,16 +179,21 @@ document.addEventListener("DOMContentLoaded", () => {
         await animateBoxes();
         await resetBoxes();
 
-        displayRegistrationForm(); // Wyświetla formularz rejestracji
+        displayRegistrationForm();
     }
 
-    loginButton.addEventListener("click", async () => {
-        addButtonAnimation(loginButton, "animate__rubberBand");
-        snowflakeContainer.style.display = "block";
+    function attachMainListeners() {
+        const loginButton = document.getElementById("login");
+        loginButton.addEventListener("click", async () => {
+            addButtonAnimation(loginButton, "animate__rubberBand");
+            snowflakeContainer.style.display = "block";
 
-        await animateBoxes();
-        await resetBoxes();
+            await animateBoxes();
+            await resetBoxes();
 
-        displayLoginForm();
-    });
+            displayLoginForm();
+        });
+    }
+
+    attachMainListeners();
 });
