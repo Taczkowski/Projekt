@@ -102,8 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
             <div>
                 <button id="submit" type="button"></button>
-            </div>
-            <div>
                 <button id="register" type="button"></button>
                 <button id="previousOne" type="button"></button>
             </div>

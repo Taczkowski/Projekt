@@ -152,7 +152,7 @@ div {
 #register {
   margin: 10px 0;
   border: none;
-  width: 150px;
+  width: 200px;
   height: 50px;
   cursor: pointer;
   background: url("./assets/newAccountUC.png") no-repeat center center;
@@ -169,7 +169,7 @@ div {
 #createAccount {
   margin: 10px 0;
   border: none;
-  width: 150px;
+  width: 200px;
   height: 50px;
   cursor: pointer;
   background: url("./assets/newAccountUC.png") no-repeat center center;
