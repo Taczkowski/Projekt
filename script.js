@@ -75,7 +75,7 @@ if (box.classList.contains("right")) box.style.transform = "translate(225vw, 0) 
 if (box.classList.contains("rightbottom")) box.style.transform = "translate(150vw, 150vh) rotate(15deg) scale(0.5)";
                 });
                 resolve();
-            }, 300);
+            }, 10);
         });
     }
  
