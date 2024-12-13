@@ -3,12 +3,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const mainDiv = document.querySelector("main > div");
     const snowflakeContainer = document.querySelector(".snowflakes");
     const boxes = document.querySelectorAll(".box");
-
-    // Zachowaj oryginalną zawartość głównej strony
+ 
     const originalMainContent = mainDiv.innerHTML;
-
-    let currentView = "main"; // Zmienna, która przechowuje aktualny widok ("main", "login", "register")
-
+ 
+    let currentView = "main";
+ 
     const ingredients = [
         './assets/Ingredients_Pepperoni.png',
         './assets/Ingredients_Bell-Pepper.png',
@@ -21,87 +20,87 @@ document.addEventListener("DOMContentLoaded", () => {
         './assets/Ingredients_Sliced_Tomato.png',
         './assets/Ingredients_Basil.png'
     ];
-
+ 
     let maxSnowflakes = 10;
     let snowflakeCount = 0;
-
+ 
     function createSnowflake() {
         if (snowflakeCount < maxSnowflakes) {
             const snowflake = document.createElement("div");
             snowflake.classList.add("snowflake");
-
+ 
             const randomIngredient = ingredients[Math.floor(Math.random() * ingredients.length)];
             const img = document.createElement("img");
             img.src = randomIngredient;
             img.width = 50;
             img.height = 50;
-
-            snowflake.style.left = Math.random() * 100 + "vw";
-            snowflake.style.animationDuration = Math.random() * 3 + 5 + "s";
-            snowflake.style.opacity = Math.random() + 0.3;
-
+ 
+snowflake.style.left = Math.random() * 100 + "vw";
+snowflake.style.animationDuration = Math.random() * 3 + 5 + "s";
+snowflake.style.opacity = Math.random() + 0.3;
+ 
             snowflake.appendChild(img);
             snowflakeContainer.appendChild(snowflake);
-
+ 
             snowflakeCount++;
-
+ 
             snowflake.addEventListener("animationend", () => {
                 snowflake.remove();
                 snowflakeCount--;
             });
         }
     }
-
+ 
     setInterval(createSnowflake, 2000);
-
+ 
     function animateBoxes() {
         return new Promise((resolve) => {
             boxes.forEach((box) => {
-                box.style.transition = "transform 1s ease-in-out";
-                box.style.transform = "translate(0, 0) rotate(0deg) scale(1)";
+box.style.transition = "transform 1s ease-in-out";
+box.style.transform = "translate(0, 0) rotate(0deg) scale(1)";
             });
-            setTimeout(() => resolve(), 1000); // Czas trwania animacji
+            setTimeout(() => resolve(), 1000);
         });
     }
-
+ 
     function resetBoxes() {
         return new Promise((resolve) => {
             setTimeout(() => {
                 boxes.forEach((box) => {
-                    if (box.classList.contains("lefttop")) box.style.transform = "translate(-150vw, -150vh) rotate(-45deg) scale(0.5)";
-                    if (box.classList.contains("left")) box.style.transform = "translate(-225vw, 0) rotate(-30deg) scale(0.5)";
-                    if (box.classList.contains("leftbottom")) box.style.transform = "translate(-150vw, 150vh) rotate(-15deg) scale(0.5)";
-                    if (box.classList.contains("righttop")) box.style.transform = "translate(150vw, -150vh) rotate(45deg) scale(0.5)";
-                    if (box.classList.contains("right")) box.style.transform = "translate(225vw, 0) rotate(30deg) scale(0.5)";
-                    if (box.classList.contains("rightbottom")) box.style.transform = "translate(150vw, 150vh) rotate(15deg) scale(0.5)";
+if (box.classList.contains("lefttop")) box.style.transform = "translate(-150vw, -150vh) rotate(-45deg) scale(0.5)";
+if (box.classList.contains("left")) box.style.transform = "translate(-225vw, 0) rotate(-30deg) scale(0.5)";
+if (box.classList.contains("leftbottom")) box.style.transform = "translate(-150vw, 150vh) rotate(-15deg) scale(0.5)";
+if (box.classList.contains("righttop")) box.style.transform = "translate(150vw, -150vh) rotate(45deg) scale(0.5)";
+if (box.classList.contains("right")) box.style.transform = "translate(225vw, 0) rotate(30deg) scale(0.5)";
+if (box.classList.contains("rightbottom")) box.style.transform = "translate(150vw, 150vh) rotate(15deg) scale(0.5)";
                 });
                 resolve();
-            }, 300); // Czas powrotu elementów
+            }, 300);
         });
     }
-
+ 
     function addButtonAnimation(button, animationClass) {
         button.classList.add(animationClass);
         setTimeout(() => {
             button.classList.remove(animationClass);
         }, 1000);
     }
-
+ 
     function displayMainPage() {
         mainDiv.innerHTML = originalMainContent;
         currentView = "main";
-        attachMainListeners(); // Przywróć event listener'y na głównej stronie
+        attachMainListeners();
     }
-
+ 
     function displayLoginForm() {
         const loginFormContainer = document.createElement("div");
-        loginFormContainer.style.margin = "10px auto";
-        loginFormContainer.style.padding = "40px";
-        loginFormContainer.style.textAlign = "center";
-        loginFormContainer.style.backgroundColor = "#bd8d8d";
-        loginFormContainer.style.borderRadius = "30px";
-        loginFormContainer.style.width = "70%";
-
+loginFormContainer.style.margin = "10px auto";
+loginFormContainer.style.padding = "40px";
+loginFormContainer.style.textAlign = "center";
+loginFormContainer.style.backgroundColor = "#bd8d8d";
+loginFormContainer.style.borderRadius = "30px";
+loginFormContainer.style.width = "70%";
+ 
         const loginForm = `
             <div class="login-form">
                 <label for="username"></label>
@@ -117,28 +116,34 @@ document.addEventListener("DOMContentLoaded", () => {
                 <button id="previousOne" type="button"></button>
             </div>
         `;
-
+ 
         loginFormContainer.innerHTML = loginForm;
         mainDiv.innerHTML = '';
         mainDiv.appendChild(loginFormContainer);
         currentView = "login";
-
+ 
         const registerButton = document.getElementById("register");
         registerButton.addEventListener("click", handleRegisterClick);
-
+ 
         const previousOneButton = document.getElementById("previousOne");
-        previousOneButton.addEventListener("click", displayMainPage);
+        previousOneButton.addEventListener("click", async () => {
+            addButtonAnimation(previousOneButton, "animate__rubberBand");
+snowflakeContainer.style.display = "block";
+            await animateBoxes();
+            await resetBoxes();
+            displayMainPage();
+        });
     }
-
+ 
     function displayRegistrationForm() {
         const registrationFormContainer = document.createElement("div");
-        registrationFormContainer.style.margin = "10px auto";
-        registrationFormContainer.style.padding = "40px";
-        registrationFormContainer.style.textAlign = "center";
-        registrationFormContainer.style.backgroundColor = "#bd8d8d";
-        registrationFormContainer.style.borderRadius = "30px";
-        registrationFormContainer.style.width = "70%";
-
+registrationFormContainer.style.margin = "10px auto";
+registrationFormContainer.style.padding = "40px";
+registrationFormContainer.style.textAlign = "center";
+registrationFormContainer.style.backgroundColor = "#bd8d8d";
+registrationFormContainer.style.borderRadius = "30px";
+registrationFormContainer.style.width = "70%";
+ 
         const registrationForm = `
             <div class="login-form">
                 <label for="firstName"></label>
@@ -161,39 +166,45 @@ document.addEventListener("DOMContentLoaded", () => {
                 <button id="previousTwo" type="button"></button>
             </div>
         `;
-
+ 
         registrationFormContainer.innerHTML = registrationForm;
         mainDiv.innerHTML = '';
         mainDiv.appendChild(registrationFormContainer);
         currentView = "register";
-
+ 
         const previousTwoButton = document.getElementById("previousTwo");
-        previousTwoButton.addEventListener("click", displayLoginForm);
+        previousTwoButton.addEventListener("click", async () => {
+            addButtonAnimation(previousTwoButton, "animate__rubberBand");
+snowflakeContainer.style.display = "block";
+            await animateBoxes();
+            await resetBoxes();
+            displayLoginForm();
+        });
     }
-
+ 
     async function handleRegisterClick() {
         const registerButton = document.getElementById("register");
         addButtonAnimation(registerButton, "animate__rubberBand");
-        snowflakeContainer.style.display = "block";
-
+snowflakeContainer.style.display = "block";
+ 
         await animateBoxes();
         await resetBoxes();
-
+ 
         displayRegistrationForm();
     }
-
+ 
     function attachMainListeners() {
         const loginButton = document.getElementById("login");
         loginButton.addEventListener("click", async () => {
             addButtonAnimation(loginButton, "animate__rubberBand");
-            snowflakeContainer.style.display = "block";
-
+snowflakeContainer.style.display = "block";
+ 
             await animateBoxes();
             await resetBoxes();
-
+ 
             displayLoginForm();
         });
     }
-
+ 
     attachMainListeners();
 });

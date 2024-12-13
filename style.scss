@@ -24,7 +24,7 @@ main > div {
   border-radius: 30px;
   border: solid $secondary-color;
   width: 70%;
-  position: relative; /* Dodajemy pozycjonowanie, by kontrolować warstwę tła */
+  position: relative;
 }
 
 #continue {
@@ -102,7 +102,6 @@ div {
   align-items: center;
 }
 
-/* Przycisk logowania */
 #login {
   margin: 10px 0;
   border: none;
@@ -110,32 +109,32 @@ div {
   height: 50px;
   cursor: pointer;
   background: url("./assets/loginUC.png") no-repeat center center;
-  background-size: contain; /* Zmieniamy cover na contain, by obrazek był dobrze widoczny */
+  background-size: contain; 
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 #login:hover {
   background: url("./assets/loginCC.png") no-repeat center center;
-  background-size: contain; /* Dopasowanie tła również podczas hover */
-  transform: scale(1.1); /* Powiększenie przy najechaniu */
+  background-size: contain; 
+  transform: scale(1.1);
 }
 
 #previousOne , #previousTwo {
-  margin-left: 20px; /* Dodatkowa przestrzeń od lewej krawędzi */
+  margin-left: 20px; 
   margin: 10px 0;
   border: none;
   width: 150px;
   height: 50px;
   cursor: pointer;
   background: url("./assets/previousUC.png") no-repeat center center;
-  background-size: contain; /* Zmieniamy cover na contain, by obrazek był dobrze widoczny */
+  background-size: contain;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 #previousOne:hover , #previousTwo:hover {
   background: url("./assets/previousCC.png") no-repeat center center;
-  background-size: contain; /* Dopasowanie tła również podczas hover */
-  transform: scale(1.1); /* Powiększenie przy najechaniu */
+  background-size: contain; 
+  transform: scale(1.1);
 }
 
 #continue {
@@ -145,22 +144,22 @@ div {
   height: 100px;
   cursor: pointer;
   background: url("./assets/continueUC.png") no-repeat center center;
-  background-size: contain; /* Dopasowanie obrazu tła do przycisku */
+  background-size: contain; 
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 #continue:hover {
   background: url("./assets/continueCC.png") no-repeat center center;
-  background-size: contain; /* Dopasowanie obrazu tła do przycisku */
-  transform: scale(1.1); /* Powiększenie przy najechaniu */
+  background-size: contain; 
+  transform: scale(1.1);
 }
 
 
-/* Przycisk rejestracji */
+
 #register {
   margin: 10px 0;
   border: none;
-  width: 150px;
+  width: 200px;
   height: 50px;
   cursor: pointer;
   background: url("./assets/newAccountUC.png") no-repeat center center;
@@ -177,7 +176,7 @@ div {
 #createAccount {
   margin: 10px 0;
   border: none;
-  width: 150px;
+  width: 200px;
   height: 50px;
   cursor: pointer;
   background: url("./assets/newAccountUC.png") no-repeat center center;
@@ -221,7 +220,7 @@ div {
   background-color: #fafafa;
 }
 
-/* Przycisk submit (Zaloguj) w formularzu */
+
 #submit {
   margin: 10px 0;
   border: none;
@@ -229,17 +228,17 @@ div {
   height: 50px;
   cursor: pointer;
   background: url("./assets/loginUC.png") no-repeat center center;
-  background-size: contain; /* Zmieniamy cover na contain, by obrazek był dobrze widoczny */
+  background-size: contain; 
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 #submit:hover {
   background: url("./assets/loginCC.png") no-repeat center center;
-  background-size: contain; /* Dopasowanie tła również podczas hover */
-  transform: scale(1.1); /* Powiększenie przy najechaniu */
+  background-size: contain; 
+  transform: scale(1.1);
 }
 
-/* Animacja płatków śniegu */
+
 .snowflakes {
   position: fixed;
   top: 0;
@@ -277,7 +276,7 @@ div {
   }
 }
 
-/* Stylizacja responsywna */
+
 @media (max-width: 768px) {
   header .logo-container {
     flex-direction: column;
@@ -343,10 +342,10 @@ div {
 }
 
 .container {
-  position: absolute; /* Zmieniamy z fixed na absolute, żeby nie blokować interakcji */
+  position: absolute; 
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); /* Pozycjonowanie na środku ekranu */
+  transform: translate(-50%, -50%); 
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -354,23 +353,23 @@ div {
   align-items: center;
   gap: 100px;
   overflow: visible;
-  z-index: 100; /* Wyższy niż inne elementy, ale tylko wtedy, gdy animacja jest aktywna */
-  pointer-events: none; /* Wyłącza interakcję z kontenerem */
+  z-index: 100; 
+  pointer-events: none;
 }
 
-/* Animacja dla przesunięcia elementów */
+
 .box {
   position: absolute;
-  width: 3000px; //powiększenie elementów
+  width: 3000px;
   height: 3000px;
-  transition: transform 1s ease; /* Czas trwania animacji */
+  transition: transform 1s ease;
   object-fit: contain;
   max-width: 100%;
   max-height: 100%;
-  z-index: 1001; /* Wyższy z-index, żeby były widoczne na wierzchu */
+  z-index: 1001;
 }
 
-/* Resetowanie elementów do początkowych pozycji */
+
 .box.lefttop { transform: translate(-150vw, -150vh); }
 .box.left { transform: translate(-225vw, 0); }
 .box.leftbottom { transform: translate(-150vw, 150vh); }
