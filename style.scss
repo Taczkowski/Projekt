@@ -109,18 +109,18 @@ div {
   height: 50px;
   cursor: pointer;
   background: url("./assets/loginUC.png") no-repeat center center;
-  background-size: contain; 
+  background-size: contain;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 #login:hover {
   background: url("./assets/loginCC.png") no-repeat center center;
-  background-size: contain; 
+  background-size: contain;
   transform: scale(1.1);
 }
 
-#previousOne , #previousTwo {
-  margin-left: 20px; 
+#previousOne, #previousTwo {
+  margin-left: 20px;
   margin: 10px 0;
   border: none;
   width: 150px;
@@ -131,9 +131,9 @@ div {
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-#previousOne:hover , #previousTwo:hover {
+#previousOne:hover, #previousTwo:hover {
   background: url("./assets/previousCC.png") no-repeat center center;
-  background-size: contain; 
+  background-size: contain;
   transform: scale(1.1);
 }
 
@@ -144,17 +144,15 @@ div {
   height: 100px;
   cursor: pointer;
   background: url("./assets/continueUC.png") no-repeat center center;
-  background-size: contain; 
+  background-size: contain;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 #continue:hover {
   background: url("./assets/continueCC.png") no-repeat center center;
-  background-size: contain; 
+  background-size: contain;
   transform: scale(1.1);
 }
-
-
 
 #register {
   margin: 10px 0;
@@ -220,7 +218,6 @@ div {
   background-color: #fafafa;
 }
 
-
 #submit {
   margin: 10px 0;
   border: none;
@@ -228,16 +225,15 @@ div {
   height: 50px;
   cursor: pointer;
   background: url("./assets/loginUC.png") no-repeat center center;
-  background-size: contain; 
+  background-size: contain;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 #submit:hover {
   background: url("./assets/loginCC.png") no-repeat center center;
-  background-size: contain; 
+  background-size: contain;
   transform: scale(1.1);
 }
-
 
 .snowflakes {
   position: fixed;
@@ -275,7 +271,6 @@ div {
     opacity: 0;
   }
 }
-
 
 @media (max-width: 768px) {
   header .logo-container {
@@ -342,10 +337,10 @@ div {
 }
 
 .container {
-  position: absolute; 
+  position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); 
+  transform: translate(-50%, -50%);
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -353,10 +348,9 @@ div {
   align-items: center;
   gap: 100px;
   overflow: visible;
-  z-index: 100; 
+  z-index: 100;
   pointer-events: none;
 }
-
 
 .box {
   position: absolute;
@@ -369,10 +363,26 @@ div {
   z-index: 1001;
 }
 
+.box.lefttop {
+  transform: translate(-150vw, -150vh);
+}
 
-.box.lefttop { transform: translate(-150vw, -150vh); }
-.box.left { transform: translate(-225vw, 0); }
-.box.leftbottom { transform: translate(-150vw, 150vh); }
-.box.righttop { transform: translate(150vw, -150vh); }
-.box.right { transform: translate(225vw, 0); }
-.box.rightbottom { transform: translate(150vw, 150vh); }
+.box.left {
+  transform: translate(-225vw, 0);
+}
+
+.box.leftbottom {
+  transform: translate(-150vw, 150vh);
+}
+
+.box.righttop {
+  transform: translate(150vw, -150vh);
+}
+
+.box.right {
+  transform: translate(225vw, 0);
+}
+
+.box.rightbottom {
+  transform: translate(150vw, 150vh);
+}
