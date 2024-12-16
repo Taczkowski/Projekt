@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Pizzerii</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    
+</head>
+<body>
+
+    <div class="menu-container">
+        <div class="header">
+            <h1>Wybierz rodzaj pizzy</h1>
+        </div>
+        <div class="content">
+            <div class="pizza-container">
+                <img src="PodstawowaPizza.png" alt="Pizza podstawowa" id="pizza-display">
+            </div>
+            <div class="pizza-options">
+                <div class="pizza-option" onclick="selectPizza('Margarita', 'PizzaBase.png')">
+                    <img src="PizzaBase.png" alt="Margarita">
+                    <button>Margarita</button>
+                </div>
+                <div class="pizza-option" onclick="selectPizza('Pepperoni', 'pepperoni.png')">
+                    <img src="pepperoni.png" alt="Pepperoni">
+                    <button>Pepperoni</button>
+                </div>
+                <div class="pizza-option" onclick="selectPizza('Capricciosa', 'Capricciosa.png')">
+                    <img src="Capricciosa.png" alt="Capricciosa">
+                    <button>Capricciosa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="order-panel" id="order-panel">
+        <h2>Twoje zamówienie:</h2>
+        <ul id="order-list"></ul>
+        <button id="order-button" onclick="goToOrderPage()">Zamawiam</button>
+    </div>
+</body>
+</html>

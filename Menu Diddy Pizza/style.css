@@ -1,0 +1,132 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(231, 217, 188);
+    background-image: url('OilFacotry.jpg'); /* Ścieżka do obrazka */
+    background-size: cover; /* Dopasowanie rozmiaru tła do całej strony */
+    background-position: center; /* Ustawienie tła na środku strony */
+    background-repeat: no-repeat; /* Zapobiega powtarzaniu tła */
+    height: 100vh; /* Wysokość strony na 100% ekranu */
+    margin: 0; /* Usunięcie domyślnych marginesów */
+}
+
+.menu-container {
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.pizza-container {
+    position: relative;
+}
+
+#pizza-display {
+    width: 300px;
+    height: 300px;
+    transition: transform 0.5s ease-in-out;
+}
+
+.pizza-options {
+    display: flex;
+    flex-direction: inline;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.pizza-option {
+    display: flex;
+    flex-direction: column; /* Ustaw obrazek nad przyciskiem */
+    align-items: center;
+    cursor: pointer;
+}
+
+.pizza-option img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px; /* Odstęp między obrazkiem a przyciskiem */
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #f57c00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 150px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #e65100;
+}
+.order-panel {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 250px;
+    background-color: #fff;
+    border: 2px solid #f57c00;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+}
+
+.order-panel h2 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    color: #333;
+}
+
+.order-panel ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.order-panel ul li {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+#order-button {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background-color: #f57c00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+#order-button:hover {
+    background-color: #e65100;
+}
+.music-control {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    cursor: pointer;
+}
+
+#volume-icon {
+    width: 30px;
+    height: 30px;
+}
