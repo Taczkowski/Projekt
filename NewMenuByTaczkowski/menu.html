@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="snowflakes"></div>
+
+    <div class="center-container">
+        <!-- Box z obrazkiem pizzy -->
+        <div class="box image-box">
+            <img id="pizza-image" src="./assets/logo.png" alt="Składnik pizzy">
+        </div>
+
+        <!-- Box z nazwami pizzy i przyciskami -->
+        <div class="box text-box">
+            <p>Witamy w P Diddy Pizza! Smacznego!</p>
+
+            <!-- Przyciski z nazwami i dodawaniem pizzy do koszyka -->
+            <div class="ingredient-buttons">
+                <div class="ingredient-item">
+                    <button onclick="changeImage('./assets/Pizza.png')">Margharitta</button>
+                    <button class="add-button" onclick="addToCart('Margharitta')">Dodaj do koszyka</button>
+                </div>
+                <div class="ingredient-item">
+                    <button onclick="changeImage('./assets/PizzaCapriciossa.png')">Capriciossa</button>
+                    <button class="add-button" onclick="addToCart('Capriciossa')">Dodaj do koszyka</button>
+                </div>
+                <div class="ingredient-item">
+                    <button onclick="changeImage('./assets/PizzaChefMan.png')">Szefowska</button>
+                    <button class="add-button" onclick="addToCart('Szefowska')">Dodaj do koszyka</button>
+                </div>
+                <div class="ingredient-item">
+                    <button onclick="changeImage('./assets/PizzaChicken.png')">Włoski Kurczak</button>
+                    <button class="add-button" onclick="addToCart('WłoskiKurczak')">Dodaj do koszyka</button>
+                </div>
+                <div class="ingredient-item">
+                    <button onclick="changeImage('./assets/PizzaHot.png')">Ostra</button>
+                    <button class="add-button" onclick="addToCart('Ostra')">Dodaj do koszyka</button>
+                </div>
+                <div class="ingredient-item">
+                    <button onclick="changeImage('./assets/PizzaHawajska.png')">Hawajska</button>
+                    <button class="add-button" onclick="addToCart('Hawajska')">Dodaj do koszyka</button>
+                </div>
+                <div class="ingredient-item">
+                    <button onclick="changeImage('./assets/PizzaTrueMan.png')">Męska</button>
+                    <button class="add-button" onclick="addToCart('Męska')">Dodaj do koszyka</button>
+                </div>
+            </div>
+
+            <!-- Koszyk -->
+            <div class="cart" onclick="toggleCart()">
+                <span id="cart-count">0</span> Pizze w koszyku
+            </div>
+
+            <!-- Popup koszyka -->
+            <div id="cart-popup" class="cart-popup">
+                <h3>Twój koszyk:</h3>
+                <div id="cart-items">
+            <button id="close-cart" onclick="toggleCart()">Zamknij koszyk</button>
+                    <p>Twój koszyk jest pusty.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js" defer></script>
+</body>
+</html>

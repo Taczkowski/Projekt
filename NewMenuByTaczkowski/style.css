@@ -1,0 +1,223 @@
+@charset "UTF-8";
+/* Kolory */
+/* Czerwony kolor tła divów */
+/* Kolor obramowania divów */
+/* Beżowy kolor tła strony */
+/* Animacja dla pizzy */
+@keyframes spinAndCrossfade {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.8;
+  }
+  50% {
+    transform: rotate(1080deg) scale(1.2);
+    opacity: 0.5;
+  }
+  51% {
+    opacity: 0.5;
+  }
+  75% {
+    opacity: 0.2;
+  }
+  100% {
+    transform: rotate(1080deg) scale(1);
+    opacity: 1;
+  }
+}
+.pizza-spin {
+  animation: spinAndCrossfade 1.2s ease-in-out; /* Czas animacji */
+}
+
+/* Globalne style */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #e7d9bc;
+  font-family: "Courier New", Courier, monospace;
+  overflow-x: hidden;
+  margin: 0;
+}
+
+/* Kontener na dwie sekcje */
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  height: 100vh;
+}
+
+/* Lewy div z obrazkiem */
+.image-box {
+  color: white;
+  width: 40vw;
+  height: 60vh;
+  overflow: hidden;
+  background-color: rgb(189, 141, 141); /* Primary color */
+  border-radius: 10px;
+  border: 1px solid rgb(146, 77, 77); /* Secondary color */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#pizza-image {
+  width: 80%; /* Ustawiamy rozmiar obrazka na 80% kontenera */
+  height: auto;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+/* Prawy div z przyciskami */
+.text-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  width: 40vw;
+  height: 60vh;
+  background-color: rgb(189, 141, 141);
+  border-radius: 10px;
+  border: 1px solid rgb(146, 77, 77);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ingredient-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ingredient-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+button {
+  padding: 10px;
+  background-color: #f0a500;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  background-color: #d77f00;
+}
+
+.add-button {
+  margin-left: 10px;
+}
+
+/* Koszyk */
+.cart {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #f0a500;
+  padding: 10px 20px;
+  border-radius: 50px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+/* Styl dla spadających składników */
+.snowflakes {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.snowflake {
+  position: absolute;
+  top: -50px;
+  animation: fall linear infinite;
+  animation-duration: 6s;
+}
+
+.snowflake img {
+  width: 50px;
+  height: 50px;
+}
+
+@keyframes fall {
+  from {
+    transform: translateY(-50px);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  to {
+    transform: translateY(110vh);
+    opacity: 0;
+  }
+}
+/* Popup koszyka */
+.cart-popup {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  background-color: #f0a500;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: none;
+  overflow-y: auto;
+  max-height: 80vh;
+  z-index: 1000;
+}
+
+.cart-popup.visible {
+  display: block;
+}
+
+#close-cart {
+  background-color: #d77f00;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+#close-cart:hover {
+  background-color: #bf6b00;
+}
+
+@media (max-width: 768px) {
+  .center-container {
+    flex-direction: column;
+  }
+  .ingredient-buttons {
+    width: 100%;
+  }
+  .ingredient-buttons button {
+    width: 100%;
+  }
+}/*# sourceMappingURL=style.css.map */
