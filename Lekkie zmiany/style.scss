@@ -1,0 +1,175 @@
+/* SCSS */
+$snowflake-size: 50px;
+$primary-color: rgb(189, 141, 141);
+$secondary-color: rgb(146, 77, 77);
+$background-color: rgb(231, 217, 188);
+
+/* Global Styles */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: $background-color;
+  font-family: "Courier New", Courier, monospace;
+  overflow-x: hidden;
+}
+
+header {
+  background-color: $background-color;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  height: 100vh;
+}
+
+.image-box {
+  color: white;
+  width: 40vw;
+  height: 65vh;
+  overflow: hidden;
+  background-color: $primary-color;
+  border-radius: 10px;
+  border: 1px solid $secondary-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#pizza-image {
+  width: 80%;
+  height: auto;
+  object-fit: contain;
+}
+
+.text-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  width: 30vw;
+  height: 60vh;
+  overflow-y: auto;
+  background-color: $primary-color;
+  border-radius: 10px;
+  border: 1px solid $secondary-color;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ingredient-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ingredient-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+button {
+  padding: 10px;
+  background-color: #f0a500;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  background-color: #d77f00;
+}
+
+.add-button {
+  margin-left: 10px;
+}
+
+.cart {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #f0a500;
+  padding: 10px 20px;
+  border-radius: 50px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.cart-popup {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: none;
+  overflow-y: auto;
+  max-height: 80vh;
+  z-index: 1000;
+}
+
+.cart-popup.visible {
+  display: block;
+}
+
+.cart-popup ul {
+  list-style: none;
+  padding: 0;
+}
+
+.cart-popup li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.cart-popup button {
+  background-color: #d77f00;
+  color: white;
+  padding: 5px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.cart-popup button:hover {
+  background-color: #bf6b00;
+}
+
+@media (max-width: 768px) {
+  .center-container {
+    flex-direction: column;
+  }
+
+  .ingredient-buttons {
+    width: 100%;
+  }
+
+  .ingredient-buttons button {
+    width: 100%;
+  }
+}

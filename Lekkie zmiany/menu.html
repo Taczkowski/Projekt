@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza Ordering</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header z logo -->
+    <header style="background-color: #e7d9bc; padding: 10px; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <img src="./assets/logo.png" alt="Logo" style="height: 60px;" />
+    </header>
+
+    <div class="snowflakes"></div>
+
+    <div class="center-container">
+        <!-- Box z obrazkiem pizzy -->
+        <div class="box image-box">
+            <img id="pizza-image" src="./assets/logo.png" alt="Pizza Image">
+        </div>
+
+        <!-- Box z nazwami pizzy i przyciskami -->
+        <div class="box text-box">
+            <p>Witamy w P Diddy Pizza! Smacznego!</p>
+
+            <!-- Przyciski z nazwami i dodawaniem pizzy do koszyka -->
+            <div class="ingredient-buttons">
+                <!-- Automatyczne generowanie pizzy -->
+                <script>
+                    const pizzaNames = ["Margharitta", "Capriciossa", "Szefowska", "Włoski Kurczak", "Ostra", "Hawajska", "Męska"];
+                    const buttonsHtml = pizzaNames.flatMap(name => {
+                        const buttons = [];
+                        for (let i = 1; i <= 5; i++) {  // Dodajemy 5 kopii każdej pizzy
+                            buttons.push(
+                                `<div class="ingredient-item">
+                                    <button onclick="changeImage('./assets/${name}.png')">${name} ${i}</button>
+                                    <button class="add-button" onclick="addToCart('${name} ${i}')">Dodaj do koszyka</button>
+                                </div>`
+                            );
+                        }
+                        return buttons;
+                    }).join('');
+                    document.write(buttonsHtml);
+                </script>
+            </div>
+
+            <!-- Koszyk -->
+            <div class="cart" onclick="toggleCart()">
+                <span id="cart-count">0</span> Pizze w koszyku
+            </div>
+
+            <!-- Popup koszyka -->
+            <div id="cart-popup" class="cart-popup">
+                <h3>Twój koszyk:</h3>
+                <ul id="cart-items"></ul>
+                <button id="close-cart" onclick="closeCart()">Zamknij koszyk</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
