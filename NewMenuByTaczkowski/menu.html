@@ -3,38 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pizza Ordering</title>
+    <title>P Diddy Pizza</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <img src="./assets/logo.png" alt="Logo" style="height: 200px;" />
+        <img src="./assets/logo.png" alt="Logo" class="logo">
     </header>
 
-    <div class="snowflakes"></div>
-
     <div class="center-container">
-        <div class="box image-box">
-            <img id="pizza-image" src="./assets/logo.png" alt="Pizza Image">
+        <div class="image-box">
+            <div class="pizza-container">
+                <img src="./assets/BGPIZZA.png" class="pizza-base" alt="Podstawa pizzy">
+                <div class="dynamic-ingredients"></div>
+            </div>
         </div>
 
-        <div class="box text-box">
-            <p>Witamy w P Diddy Pizza! Smacznego!</p>
-            <div class="ingredient-buttons" id="ingredient-buttons"></div>
-
-            <div class="cart" onclick="toggleCart()">
-                <img src="./assets/cart.png" alt="Cart Icon" class="cart-icon">
-                <span id="cart-count" class="cart-count">0</span>
-            </div>
-
-            <div id="cart-popup" class="cart-popup">
-                <button id="close-cart" onclick="closeCart()">×</button>
-                <h3>Twój koszyk:</h3>
-                <ul id="cart-items"></ul>
-            </div>
+        <div class="text-box">
+            <h2>Menu Pizzy</h2>
+            <div class="pizza-menu" id="pizza-menu"></div>
         </div>
     </div>
 
-    <script src="script.js" defer></script>
+    <div class="cart" onclick="toggleCart()">
+        <img src="./assets/cart.png" alt="Cart Icon" class="cart-icon">
+        <span id="cart-count" class="cart-count">0</span>
+    </div>
+
+    <div id="cart-popup" class="cart-popup">
+        <button id="close-cart" onclick="closeCart()">×</button>
+        <h3>Twój koszyk</h3>
+        <ul id="cart-items"></ul>
+        <div class="cart-total">
+            <span>SUMA:</span>
+            <span id="cart-total">0 zł</span>
+        </div>
+        <button id="checkout-btn" onclick="checkout()">Zamów teraz 🍕</button>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
