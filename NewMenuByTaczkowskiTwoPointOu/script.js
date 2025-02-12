@@ -19,7 +19,16 @@ document.addEventListener("DOMContentLoaded", () => {
         pomidor: "Ingredients_Sliced_Tomato.png"
     };
 
+    const BASE_PRICE = 35;
+    const INGREDIENT_PRICE = 2;
+
     const pizzas = [
+        {
+            name: "🍳 Pizza Własna",
+            price: BASE_PRICE,
+            ingredients: [],
+            custom: true
+        },
         {
             name: "Travis Scott Special",
             price: 38,
@@ -136,6 +145,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let currentPizza = null;
     let fallingInterval = null;
+    let customIngredients = [];
+    let isCustomMode = false;
+
     const audioCache = {
         add: new Audio('./assets/add-sound.mp3'),
         remove: new Audio('./assets/remove-sound.mp3'),
@@ -156,12 +168,12 @@ document.addEventListener("DOMContentLoaded", () => {
         rightbottom: { target: { left: "100%", top: "100%", transform: "translate(0%, 0%) scale(0.6)", opacity: 0 } },
         righttop: { target: { left: "100%", top: "0%", transform: "translate(0%, -100%) scale(0.6)", opacity: 0 } }
     };
-    
+
     // Tworzenie obrazków
     const container = document.createElement('div');
     container.className = 'initial-animation-container';
     document.body.appendChild(container);
-    
+
     Object.keys(initialImages).forEach(id => {
         const img = document.createElement('img');
         img.id = id;
@@ -176,7 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
         container.appendChild(img);
     });
-    
+
     // Animacja
     setTimeout(() => {
         Object.entries(initialImages).forEach(([id, config]) => {
@@ -196,18 +208,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // Animacja składników
     function createIngredientElement(ingredient) {
         const img = document.createElement('img');
-        img.className = 'falling-ingredient'; // Dodaj klasę początkową
+        img.className = 'falling-ingredient';
         img.src = `./assets/${ingredientMap[ingredient]}`;
-        img.style.left = `${Math.random() * 100}%`; // Losowe położenie poziome
-        img.style.top = `-10%`; // Początkowe położenie poza ekranem (na górze)
-        img.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`; // Animacja spadania
-    
-        // Użyj requestAnimationFrame, aby upewnić się, że styl zostanie zastosowany
+        img.style.left = `${Math.random() * 100}%`;
+        img.style.top = `-10%`;
+        img.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+
         requestAnimationFrame(() => {
-            img.classList.add('visible'); // Pokaż składnik
+            img.classList.add('visible');
         });
-    
-        img.addEventListener('animationend', () => img.remove()); // Usuń po zakończeniu animacji
+
+        img.addEventListener('animationend', () => img.remove());
         return img;
     }
 
@@ -220,7 +231,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function initFallingIngredients() {
-        // Początkowe wiszące składniki
         Object.keys(ingredientMap).forEach(ingredient => {
             const img = createIngredientElement(ingredient);
             img.style.position = 'absolute';
@@ -237,8 +247,77 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 100);
     }
 
-    // Reszta kodu pozostaje bez zmian...
-    // (initMenu, handlePizzaClick, showIngredients, hideIngredients, addToCart, itd.)
+    // Custom Pizza Functions
+    function enterCustomPizzaMode() {
+        isCustomMode = true;
+        document.getElementById('pizza-menu').style.display = 'none';
+        document.getElementById('custom-pizza-ui').style.display = 'block';
+        document.querySelector('.text-box h2').textContent = 'Wybierz składniki';
+        initIngredientSelector();
+        manageFallingIngredients([]);
+    }
+
+// Zmiana w script.js w funkcji exitCustomPizzaMode
+function exitCustomPizzaMode() {
+    isCustomMode = false;
+    document.getElementById('pizza-menu').style.display = 'block';
+    document.getElementById('custom-pizza-ui').style.display = 'none';
+}
+
+function addCustomPizzaToCart() {
+    console.log("Dodawanie własnej pizzy");
+}
+
+
+    function initIngredientSelector() {
+        const container = document.querySelector('.ingredient-selector');
+        container.innerHTML = '';
+
+        Object.keys(ingredientMap).forEach(ingredient => {
+            const btn = document.createElement('button');
+            btn.className = `ingredient-btn ${customIngredients.includes(ingredient) ? 'active' : ''}`;
+            btn.innerHTML = `
+                <img src="./assets/${ingredientMap[ingredient]}" alt="${ingredient}">
+                <span>${translateIngredients([ingredient])[0]}</span>
+            `;
+
+            btn.onclick = () => {
+                audioCache.pizza.play();
+                const index = customIngredients.indexOf(ingredient);
+                if (index > -1) {
+                    customIngredients.splice(index, 1);
+                } else {
+                    customIngredients.push(ingredient);
+                }
+                btn.classList.toggle('active');
+                showIngredients({ ingredients: customIngredients });
+                manageFallingIngredients(customIngredients);
+            };
+            container.appendChild(btn);
+        });
+    }
+
+// Zmiana w funkcji addCustomPizzaToCart
+function addCustomPizzaToCart() {
+    if (customIngredients.length === 0) {
+        alert('Proszę dodać przynajmniej 1 składnik!');
+        return;
+    }
+
+    const customPizza = {
+        name: `Custom Pizza (${customIngredients.join(', ')})`,
+        price: BASE_PRICE + (customIngredients.length * INGREDIENT_PRICE),
+        ingredients: [...customIngredients]
+    };
+
+    console.log("Dodawana pizza:", customPizza); // Sprawdzenie w konsoli
+    cart.push(customPizza);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartIcon();
+    renderCartItems();
+    exitCustomPizzaMode();
+}
+
 
     // Menu pizz
     function initMenu() {
@@ -251,11 +330,17 @@ document.addEventListener("DOMContentLoaded", () => {
             pizzaItem.dataset.pizza = pizza.name.toLowerCase().replace(/ /g, '-');
             pizzaItem.innerHTML = `
                 <h3>${pizza.name} <span class="price">${pizza.price}zł</span></h3>
-                <p class="ingredients">${translateIngredients(pizza.ingredients).join(', ')}</p>
-                <button>Dodaj do koszyka</button>
+                ${pizza.custom ? '' : `<p class="ingredients">${translateIngredients(pizza.ingredients).join(', ')}</p>`}
+                <button>${pizza.custom ? 'Stwórz' : 'Dodaj do koszyka'}</button>
             `;
 
-            pizzaItem.querySelector('button').addEventListener('click', () => addToCart(pizza));
+            pizzaItem.querySelector('button').addEventListener('click', () => {
+                if (pizza.custom) {
+                    enterCustomPizzaMode();
+                } else {
+                    addToCart(pizza);
+                }
+            });
             pizzaItem.addEventListener('click', handlePizzaClick(pizza, pizzaItem));
             menuContainer.appendChild(pizzaItem);
         });
@@ -264,7 +349,12 @@ document.addEventListener("DOMContentLoaded", () => {
     function handlePizzaClick(pizza, pizzaItem) {
         return (e) => {
             if (e.target.tagName === 'BUTTON') return;
-            
+
+            if (pizza.custom) {
+                enterCustomPizzaMode();
+                return;
+            }
+
             audioCache.pizza.play();
             const wasActive = pizzaItem.classList.contains('active');
             document.querySelectorAll('.pizza-item').forEach(item => item.classList.remove('active'));
@@ -288,7 +378,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ingredientsLayer.innerHTML = '';
 
         const SLICES = 6;
-        const INGREDIENTS_PER_TYPE = 3;
+        const INGREDIENTS_PER_TYPE = isCustomMode ? 6 : 3;
 
         for (let slice = 0; slice < SLICES; slice++) {
             const sliceIngredients = [...pizza.ingredients]
@@ -422,7 +512,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('close-cart').addEventListener('click', closeCart);
     document.getElementById('checkout-btn').addEventListener('click', checkout);
 
-    // Dodanie styli animacji
     const style = document.createElement('style');
     style.textContent = `
         @keyframes fall {
@@ -431,7 +520,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     `;
     document.head.appendChild(style);
-
+    window.exitCustomPizzaMode = exitCustomPizzaMode;
+    window.addCustomPizzaToCart = addCustomPizzaToCart;
+    
     initFallingIngredients();
     initMenu();
     updateCartIcon();

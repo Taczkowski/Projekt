@@ -19,14 +19,25 @@
                 <div class="dynamic-ingredients"></div>
             </div>
         </div>
-
-        <!-- Prawy div z menu -->
-        <div class="text-box">
-            <h2>Menu Pizzy</h2>
-            <div class="pizza-menu" id="pizza-menu"></div>
-        </div>
+<!-- Zmodyfikowany prawy div z menu -->
+<div class="text-box">
+    <div class="pizza-menu-container">
+        <h2>Menu Pizzy</h2>
+        <div class="pizza-menu" id="pizza-menu"></div>
     </div>
 
+    <!-- Custom Pizza UI -->
+    <div id="custom-pizza-ui" class="custom-pizza-ui">
+<!-- W sekcji custom pizza -->
+<div class="custom-header">
+    <h3>Stwórz własną pizzę!</h3>
+<!-- Zmiana w menu.html -->
+<button onclick="exitCustomPizzaMode()">← Wróć</button>
+</div>
+        <div class="ingredient-selector"></div>
+        <button class="confirm-custom" onclick="addCustomPizzaToCart()">Dodaj do koszyka (35zł + 2zł/składnik)</button>
+    </div>
+</div>
     <!-- Koszyk -->
     <div class="cart" onclick="toggleCart()">
         <img src="./assets/cart.png" alt="Cart Icon" class="cart-icon">
@@ -45,6 +56,7 @@
         <button id="checkout-btn" onclick="checkout()">Zamów teraz 🍕</button>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
+</div>
 </body>
 </html>
