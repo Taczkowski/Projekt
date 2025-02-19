@@ -40,7 +40,7 @@ require_once 'db_config.php';
                     
                     <button 
                         class="nav-btn menu-btn" 
-                        onclick="window.location.href='menu.php'">
+                        onclick="window.location.href='./NewMenuByTaczkowskiTwoPointOu/menu.php'">
                         Zobacz menu
                     </button>
                     
