@@ -1,0 +1,220 @@
+/* Zmienne kolorystyczne - musi być takie same jak w innych plikach */
+$primary-color: rgb(189, 141, 141);
+$secondary-color: rgb(146, 77, 77);
+$background-color: rgb(231, 217, 188);
+$text-color: white;
+
+body {
+  background-color: $background-color;
+}
+.account-container{
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 20px;
+
+  .logo-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .logo {
+    max-width: 300px;
+    z-index: 10;
+  }
+
+  .pizza {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 350px;
+    z-index: 5;
+  }
+}
+
+.sortable {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  
+  &:hover {
+      background-color: rgba(darken($secondary-color, 10%), 0.8);
+  }
+  
+  &::after {
+      content: '';
+      display: inline-block;
+      margin-left: 8px;
+      font-size: 0.8em;
+  }
+  
+  &[data-sort]::after {
+      content: '⇅';
+      opacity: 0.5;
+  }
+  
+  &:hover::after {
+      opacity: 1;
+  }
+}
+
+.orders-table {
+  th {
+      position: relative;
+      padding-right: 30px !important;
+      
+      &::after {
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+      }
+  }
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.back-btn {
+  padding: 12px 25px;
+  background-color: $secondary-color;
+  color: $text-color;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  
+  &:hover {
+      background-color: darken($secondary-color, 10%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  &::before {
+      content: '←';
+      margin-right: 8px;
+      font-weight: bold;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-container {
+      flex-direction: column;
+      gap: 15px;
+  }
+  
+  .back-btn {
+      width: 100%;
+      padding: 10px;
+  }
+}
+.content{
+  z-index: 3; /* Nadal nad składnikami */
+}
+// Zmienne kolorystyczne
+$primary-color: rgb(189, 141, 141);
+$secondary-color: rgb(146, 77, 77);
+$background-color: rgb(231, 217, 188);
+$text-color: white;
+
+// Animacje
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+    -webkit-transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+  }
+}
+
+// Sekcja zamówień
+.orders-section {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 30px;
+  background: rgba($primary-color, 0.9);
+  border: 3px solid $secondary-color;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  -webkit-animation: fadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation-delay: 0.3s;
+
+  h2 {
+    color: $text-color;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  overflow: hidden;
+
+  th, td {
+    padding: 15px 20px;
+    text-align: center;
+    border-bottom: 2px solid rgba($secondary-color, 0.1);
+  }
+
+  th {
+    background-color: $secondary-color;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  tr {
+    transition: all 0.3s ease;
+    
+    &:nth-child(even) {
+      background-color: rgba($background-color, 0.3);
+    }
+
+    &:hover {
+      background-color: rgba($primary-color, 0.1);
+      transform: scale(1.02);
+    }
+  }
+
+  td {
+    color: darken($secondary-color, 10%);
+    font-weight: 500;
+    
+    &:first-child {
+      font-weight: bold;
+      color: $secondary-color;
+    }
+  }
+}
+
+// Reszta styli pozostaje bez zmian

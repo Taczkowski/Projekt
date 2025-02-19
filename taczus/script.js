@@ -3,9 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const mainDiv = document.querySelector("main > div");
     const snowflakeContainer = document.querySelector(".snowflakes");
     const boxes = document.querySelectorAll(".box");
-
     const originalMainContent = mainDiv.innerHTML;
-
     let currentView = "main";
 
     const ingredients = [
@@ -24,24 +22,22 @@ document.addEventListener("DOMContentLoaded", () => {
     let maxSnowflakes = 10;
     let snowflakeCount = 0;
 
-    function createSnowflake() {
+    const createSnowflake = () => {
         if (snowflakeCount < maxSnowflakes) {
             const snowflake = document.createElement("div");
             snowflake.classList.add("snowflake");
-
-            const randomIngredient = ingredients[Math.floor(Math.random() * ingredients.length)];
+            
             const img = document.createElement("img");
-            img.src = randomIngredient;
+            img.src = ingredients[Math.floor(Math.random() * ingredients.length)];
             img.width = 50;
             img.height = 50;
-
-            snowflake.style.left = Math.random() * 100 + "vw";
-            snowflake.style.animationDuration = Math.random() * 3 + 5 + "s";
+            
+            snowflake.style.left = `${Math.random() * 100}vw`;
+            snowflake.style.animationDuration = `${Math.random() * 3 + 5}s`;
             snowflake.style.opacity = Math.random() + 0.3;
-
+            
             snowflake.appendChild(img);
             snowflakeContainer.appendChild(snowflake);
-
             snowflakeCount++;
 
             snowflake.addEventListener("animationend", () => {
@@ -49,236 +45,182 @@ document.addEventListener("DOMContentLoaded", () => {
                 snowflakeCount--;
             });
         }
-    }
+    };
 
-    setInterval(createSnowflake, 2000);
-
-    function animateBoxes() {
-        return new Promise((resolve) => {
-            boxes.forEach((box) => {
-                box.style.transition = "transform 1s ease-in-out";
-                box.style.transform = "translate(0, 0) rotate(0deg) scale(1)";
-            });
-            setTimeout(() => resolve(), 1000);
+    const animateBoxes = () => new Promise(resolve => {
+        boxes.forEach(box => {
+            box.style.transition = "transform 1s ease-in-out";
+            box.style.transform = "translate(0, 0) rotate(0deg) scale(1)";
         });
-    }
+        setTimeout(resolve, 1000);
+    });
 
-    function resetBoxes() {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                boxes.forEach((box) => {
-                    if (box.classList.contains("lefttop")) box.style.transform = "translate(-150vw, -150vh) rotate(-45deg) scale(0.5)";
-                    if (box.classList.contains("left")) box.style.transform = "translate(-225vw, 0) rotate(-30deg) scale(0.5)";
-                    if (box.classList.contains("leftbottom")) box.style.transform = "translate(-150vw, 150vh) rotate(-15deg) scale(0.5)";
-                    if (box.classList.contains("righttop")) box.style.transform = "translate(150vw, -150vh) rotate(45deg) scale(0.5)";
-                    if (box.classList.contains("right")) box.style.transform = "translate(225vw, 0) rotate(30deg) scale(0.5)";
-                    if (box.classList.contains("rightbottom")) box.style.transform = "translate(150vw, 150vh) rotate(15deg) scale(0.5)";
-                });
-                resolve();
-            }, 10);
-        });
-    }
-
-    function addButtonAnimation(button, animationClass) {
-        button.classList.add(animationClass);
+    const resetBoxes = () => new Promise(resolve => {
         setTimeout(() => {
-            button.classList.remove(animationClass);
-        }, 1000);
-    }
+            boxes.forEach(box => {
+                const classList = box.classList;
+                if(classList.contains("lefttop")) box.style.transform = "translate(-150vw, -150vh) rotate(-45deg) scale(0.5)";
+                if(classList.contains("left")) box.style.transform = "translate(-225vw, 0) rotate(-30deg) scale(0.5)";
+                if(classList.contains("leftbottom")) box.style.transform = "translate(-150vw, 150vh) rotate(-15deg) scale(0.5)";
+                if(classList.contains("righttop")) box.style.transform = "translate(150vw, -150vh) rotate(45deg) scale(0.5)";
+                if(classList.contains("right")) box.style.transform = "translate(225vw, 0) rotate(30deg) scale(0.5)";
+                if(classList.contains("rightbottom")) box.style.transform = "translate(150vw, 150vh) rotate(15deg) scale(0.5)";
+            });
+            resolve();
+        }, 10);
+    });
 
-    function displayMainPage() {
-        mainDiv.innerHTML = originalMainContent;
-        currentView = "main";
-        attachMainListeners();
-    }
+    const displaySection = (html, className) => {
+        const container = document.createElement("div");
+        container.className = className;
+        container.innerHTML = html;
+        mainDiv.innerHTML = '';
+        mainDiv.appendChild(container);
+    };
 
-    function displayLoginForm() {
-        const loginFormContainer = document.createElement("div");
-        loginFormContainer.style.margin = "10px auto";
-        loginFormContainer.style.padding = "40px";
-        loginFormContainer.style.textAlign = "center";
-        loginFormContainer.style.backgroundColor = "#bd8d8d";
-        loginFormContainer.style.borderRadius = "30px";
-        loginFormContainer.style.width = "70%";
-
-        const loginForm = `
-            <div class="login-form">
-                <div class="form-row">
-                    <h1>Login</h1>
-                    <input type="text" id="username" placeholder="Wpisz login">
+    const displayLoginForm = () => {
+        displaySection(`
+            <div class="form-container">
+                <h2>Logowanie</h2>
+                <div class="form-group">
+                    <label>Login:</label>
+                    <input type="text" id="loginUsername" required>
                 </div>
-                <div class="form-row">
-                    <h1>Hasło</h1>
-                    <input type="password" id="password" placeholder="Wpisz hasło">
+                <div class="form-group">
+                    <label>Hasło:</label>
+                    <input type="password" id="loginPassword" required>
                 </div>
                 <div class="form-buttons">
-                    <button id="submit" type="button"></button>
-                    <button id="register" type="button"></button>
-                    <button id="previousOne" type="button"></button>
+                    <button id="loginSubmit" class="btn-primary">Zaloguj</button>
+                    <button id="showRegister" class="btn-secondary">Rejestracja</button>
+                    <button id="backToMain" class="btn-back">Powrót</button>
                 </div>
             </div>
-        `;
+        `, 'login-form');
+    };
 
-        loginFormContainer.innerHTML = loginForm;
-        mainDiv.innerHTML = '';
-        mainDiv.appendChild(loginFormContainer);
-        currentView = "login";
-
-        const registerButton = document.getElementById("register");
-        registerButton.addEventListener("click", handleRegisterClick);
-
-        const previousOneButton = document.getElementById("previousOne");
-        previousOneButton.addEventListener("click", async () => {
-            addButtonAnimation(previousOneButton, "animate__rubberBand");
-            snowflakeContainer.style.display = "block";
-            await animateBoxes();
-            await resetBoxes();
-            displayMainPage();
-        });
-
-        const submitButton = document.getElementById("submit");
-        submitButton.addEventListener("click", async () => {
-            await handleLogin();
-        });
-    }
-
-    function displayRegistrationForm() {
-        const registrationFormContainer = document.createElement("div");
-        registrationFormContainer.style.margin = "10px auto";
-        registrationFormContainer.style.padding = "40px";
-        registrationFormContainer.style.textAlign = "center";
-        registrationFormContainer.style.backgroundColor = "#bd8d8d";
-        registrationFormContainer.style.borderRadius = "30px";
-        registrationFormContainer.style.width = "70%";
-
-        const registrationForm = `
-            <div class="login-form">
-                    <h1>Login</h1>
-                <label for="Name"></label>
-                <input type="text" id="Name" placeholder="Login">
+    const displayRegistrationForm = () => {
+        displaySection(`
+            <div class="form-container">
+                <h2>Rejestracja</h2>
+                <div class="form-group">
+                    <label>Login:</label>
+                    <input type="text" id="regUsername" required>
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="regEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Hasło:</label>
+                    <input type="password" id="regPassword" required>
+                </div>
+                <div class="form-buttons">
+                    <button id="regSubmit" class="btn-primary">Zarejestruj</button>
+                    <button id="backToLogin" class="btn-back">Powrót</button>
+                </div>
             </div>
-            <div class="login-form">
-                    <h1>Email</h1>
-                <label for="email"></label>
-                <input type="email" id="email" placeholder="Email">
-            </div>
-            <div class="login-form">
-                    <h1>Hasło</h1>
-                <label for="password"></label>
-                <input type="password" id="password" placeholder="Hasło">
-            </div>
-            <div>
-                <button id="createAccount" type="button"></button>
-                <button id="previousTwo" type="button">Powrót</button>
-            </div>
-        `;
+        `, 'registration-form');
+    };
 
-        registrationFormContainer.innerHTML = registrationForm;
-        mainDiv.innerHTML = '';
-        mainDiv.appendChild(registrationFormContainer);
-        currentView = "register";
-
-        const previousTwoButton = document.getElementById("previousTwo");
-        previousTwoButton.addEventListener("click", async () => {
-            addButtonAnimation(previousTwoButton, "animate__rubberBand");
+    document.addEventListener('click', async e => {
+        if(e.target.matches('#login')) {
+            e.target.classList.add('animate__rubberBand');
             snowflakeContainer.style.display = "block";
             await animateBoxes();
             await resetBoxes();
             displayLoginForm();
-        });
-
-        const createAccountButton = document.getElementById("createAccount");
-        createAccountButton.addEventListener("click", async () => {
-            await handleRegistration();
-        });
-    }
-
-    async function handleRegisterClick() {
-        const registerButton = document.getElementById("register");
-        addButtonAnimation(registerButton, "animate__rubberBand");
-        snowflakeContainer.style.display = "block";
-
-        await animateBoxes();
-        await resetBoxes();
-
-        displayRegistrationForm();
-    }
-
-    async function handleLogin() {
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
-    
-        // Sprawdzamy, czy wszystkie pola są wypełnione
-        if (username === "" || password === "") {
-            alert("Wszystkie pola muszą być wypełnione!");
-            return;
         }
-    
-        // Wysłanie danych do backendu (login.php)
-        const response = await fetch('login.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
-        });
-    
-        const data = await response.json();
         
-        // Sprawdzenie odpowiedzi z serwera
-        if (data.status === "success") {
-            alert(data.message);
-            // Tutaj możesz dodać logikę do przekierowania na stronę po udanym logowaniu
-        } else {
-            alert(data.message);  // Jeśli wystąpił błąd, wyświetlamy go użytkownikowi
-        }
-    }
-    
-
-    async function handleRegistration() {
-        const username = document.getElementById("Name").value;
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-    
-        // Sprawdzamy, czy wszystkie pola są wypełnione
-        if (username === "" || email === "" || password === "") {
-            alert("Wszystkie pola muszą być wypełnione!");
-            return;
-        }
-    
-        // Wysłanie danych do backendu (register.php)
-        const response = await fetch('register.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `username=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
-        });
-    
-        const data = await response.json();
-        
-        // Sprawdzenie odpowiedzi z serwera
-        if (data.status === "success") {
-            alert(data.message);
-            displayLoginForm();  // Po udanej rejestracji, pokazujemy formularz logowania
-        } else {
-            alert(data.message);  // Jeśli wystąpił błąd, wyświetlamy go użytkownikowi
-        }
-    }
-    
-
-    function attachMainListeners() {
-        const loginButton = document.getElementById("login");
-        loginButton.addEventListener("click", async () => {
-            addButtonAnimation(loginButton, "animate__rubberBand");
+        if(e.target.matches('#backToMain, #backToLogin')) {
+            e.target.classList.add('animate__rubberBand');
             snowflakeContainer.style.display = "block";
-
             await animateBoxes();
             await resetBoxes();
+            mainDiv.innerHTML = originalMainContent;
+            attachMainListeners();
+        }
 
-            displayLoginForm();
+        if(e.target.matches('#showRegister')) {
+            e.target.classList.add('animate__rubberBand');
+            snowflakeContainer.style.display = "block";
+            await animateBoxes();
+            await resetBoxes();
+            displayRegistrationForm();
+        }
+
+        if(e.target.matches('#loginSubmit')) handleLogin(e);
+        if(e.target.matches('#regSubmit')) handleRegistration(e);
+    });
+
+    const handleLogin = async e => {
+        e.preventDefault();
+        const username = document.getElementById('loginUsername')?.value;
+        const password = document.getElementById('loginPassword')?.value;
+
+        if(!username || !password) {
+            alert('Wypełnij wszystkie pola!');
+            return;
+        }
+
+        try {
+            const response = await fetch('login.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: new URLSearchParams({username, password})
+            });
+
+            const data = await response.json();
+            
+            if(data.status === "success") {
+                window.location.href = "main.php";
+            } else {
+                alert(`Błąd: ${data.message}`);
+            }
+        } catch(error) {
+            console.error('Błąd:', error);
+            alert('Błąd połączenia z serwerem');
+        }
+    };
+
+    const handleRegistration = async e => {
+        e.preventDefault();
+        const username = document.getElementById('regUsername')?.value;
+        const email = document.getElementById('regEmail')?.value;
+        const password = document.getElementById('regPassword')?.value;
+
+        if(!username || !email || !password) {
+            alert('Wypełnij wszystkie pola!');
+            return;
+        }
+
+        try {
+            const response = await fetch('register.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: new URLSearchParams({username, email, password})
+            });
+
+            const data = await response.json();
+            
+            if(data.status === "success") {
+                alert('Rejestracja udana! Możesz się zalogować');
+                displayLoginForm();
+            } else {
+                alert(`Błąd: ${data.message}`);
+            }
+        } catch(error) {
+            console.error('Błąd:', error);
+            alert('Błąd połączenia z serwerem');
+        }
+    };
+
+    const attachMainListeners = () => {
+        document.getElementById('login')?.addEventListener('click', () => {
+            snowflakeContainer.style.display = "block";
         });
-    }
+    };
 
+    setInterval(createSnowflake, 2000);
     attachMainListeners();
 });
