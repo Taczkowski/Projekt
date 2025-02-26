@@ -424,6 +424,12 @@ function addCustomPizzaToCart() {
     }
 
     // Obsługa koszyka
+    
+    function proceedToCheckout() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        window.location.href = `summary.php?cart=${encodeURIComponent(JSON.stringify(cart))}`;
+    }
+
     function addToCart(pizza) {
         audioCache.add.play();
         cart.push(pizza);
@@ -510,19 +516,8 @@ function addCustomPizzaToCart() {
     // Inicjalizacja
     document.querySelector('.cart').addEventListener('click', toggleCart);
     document.getElementById('close-cart').addEventListener('click', closeCart);
-    document.getElementById('checkout-btn').addEventListener('click', checkout);
+    document.getElementById('checkout-btn').addEventListener('click', proceedToCheckout);
 
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes fall {
-            from { transform: translateY(-100vh) rotate(0deg); }
-            to { transform: translateY(100vh) rotate(360deg); }
-        }
-    `;
-    document.head.appendChild(style);
-    window.exitCustomPizzaMode = exitCustomPizzaMode;
-    window.addCustomPizzaToCart = addCustomPizzaToCart;
-    
     initFallingIngredients();
     initMenu();
     updateCartIcon();

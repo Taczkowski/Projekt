@@ -12,6 +12,112 @@ body, html {
   font-family: 'Noot';
   src: url('assets/Noot.otf') format('opentype');
 }
+
+/* Styl dla komunikatów o sukcesie i błędach */
+.success-message, .error-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  animation: slideIn 0.5s ease-out, fadeOut 0.5s ease-out 4.5s forwards;
+}
+
+.success-message {
+  background-color: #28a745; /* Zielony kolor dla sukcesu */
+}
+
+.error-message {
+  background-color: #dc3545; /* Czerwony kolor dla błędu */
+}
+
+/* Animacja pojawiania się */
+@keyframes slideIn {
+  from {
+      transform: translateX(100%);
+      opacity: 0;
+  }
+  to {
+      transform: translateX(0);
+      opacity: 1;
+  }
+}
+
+/* Animacja znikania */
+@keyframes fadeOut {
+  0% {
+      opacity: 1;
+  }
+  99% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 0;
+      display: none; /* Ukryj element po zakończeniu animacji */
+  }
+}
+
+/* Dodatkowe ikony */
+.success-message::before, .error-message::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.success-message::before {
+  background-image: url('icons/success-icon.png'); /* Ikona sukcesu */
+}
+
+.error-message::before {
+  background-image: url('icons/error-icon.png'); /* Ikona błędu */
+}
+
+/* Styl dla okienka z wyborem awatara */
+#avatar-popup {
+  display: none; /* Domyślnie ukryte */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+#avatar-popup:not(.hidden) {
+  display: flex; /* Pokazuje okienko, gdy nie ma klasy 'hidden' */
+}
+
+.popup-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.avatar-option {
+  width: 50px;
+  height: 50px;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+}
+
+.avatar-option:hover {
+  border-color: #007bff;
+}
+
 header {
   text-align: center;
   margin-top: 20px;

@@ -1,13 +1,18 @@
 <?php
 session_start();
-require_once 'db_config.php';
 
-// Pobierz zawartość koszyka z sesji
-$cart = $_SESSION['cart'] ?? [];
+// Odbierz dane z koszyka z URL
+if (isset($_GET['cart'])) {
+    $cart = json_decode(urldecode($_GET['cart']), true);
+    $_SESSION['cart'] = $cart;
+} else {
+    $cart = $_SESSION['cart'] ?? [];
+}
+
+// Oblicz całkowitą kwotę zamówienia
 $total = 0;
-
 foreach ($cart as $item) {
-    $total += $item['price'] * $item['quantity'];
+    $total += $item['price'] * ($item['quantity'] ?? 1); // Uwzględnij ilość produktów
 }
 ?>
 
@@ -31,16 +36,16 @@ foreach ($cart as $item) {
                 <p class="empty-cart">Koszyk jest pusty</p>
             <?php else: ?>
                 <div class="cart-items">
-                    <?php foreach($cart as $id => $product): ?>
-                    <div class="cart-item">
-                        <div class="item-info">
-                            <span class="item-name"><?= htmlspecialchars($product['name']) ?></span>
-                            <span class="item-price"><?= number_format($product['price'], 2) ?> zł</span>
+                    <?php foreach($cart as $id => $item): ?>
+                        <div class="cart-item">
+                            <div class="item-info">
+                                <span class="item-name"><?= htmlspecialchars($item['name']) ?></span>
+                                <span class="item-price"><?= number_format($item['price'], 2) ?> zł</span>
+                            </div>
+                            <div class="item-quantity">
+                                <span>Ilość: <?= $item['quantity'] ?? 1 ?></span> <!-- Wyświetl ilość -->
+                            </div>
                         </div>
-                        <div class="item-quantity">
-                            <span>Ilość: <?= $product['quantity'] ?></span>
-                        </div>
-                    </div>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
@@ -101,6 +106,7 @@ foreach ($cart as $item) {
             </form>
         </div>
     </div>
+
     <script src="falling-ingredients.js"></script>
     <script src="script.js"></script>
 </body>

@@ -8,85 +8,57 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-$existing_data = [];
-try {
-    $stmt = $conn->prepare("SELECT * FROM daneosobowe WHERE ID = ?");
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-        $existing_data = $result->fetch_assoc();
-    }
-    $stmt->close();
-} catch (Exception $e) {
-    die("Błąd przy pobieraniu danych: " . $e->getMessage());
-}
-
+// Pobierz dane z formularza
 $fields = [
-    'Imie' => $_POST['imie'] ?? $existing_data['Imie'] ?? '',
-    'Nazwisko' => $_POST['nazwisko'] ?? $existing_data['Nazwisko'] ?? '',
-    'miejscowosc' => $_POST['miasto'] ?? $existing_data['miejscowosc'] ?? '',
-    'ulica' => $_POST['ulica'] ?? $existing_data['ulica'] ?? '',
-    'numertelefonu' => $_POST['telefon'] ?? $existing_data['numertelefonu'] ?? '',
-    'Email' => $_POST['email'] ?? $existing_data['Email'] ?? ''
+    'Imie' => $_POST['imie'] ?? null,
+    'Nazwisko' => $_POST['nazwisko'] ?? null,
+    'miejscowosc' => $_POST['miasto'] ?? null,
+    'ulica' => $_POST['ulica'] ?? null,
+    'numertelefonu' => $_POST['telefon'] ?? null,
+    'Email' => $_POST['email'] ?? null
 ];
 
-$fields['numertelefonu'] = preg_replace('/[^0-9]/', '', $fields['numertelefonu']);
-if (!filter_var($fields['Email'], FILTER_VALIDATE_EMAIL)) {
-    die("Nieprawidłowy format emaila!");
+// Walidacja emaila (jeśli został przesłany)
+if ($fields['Email'] && !filter_var($fields['Email'], FILTER_VALIDATE_EMAIL)) {
+    $_SESSION['error'] = "Nieprawidłowy format emaila!";
+    header("Location: konto.php");
+    exit();
 }
 
-try {
-    if (isset($existing_data['ID'])) {
-        $sql = "UPDATE daneosobowe SET 
-                Imie = ?,
-                Nazwisko = ?,
-                miejscowosc = ?,
-                ulica = ?,
-                numertelefonu = ?,
-                Email = ?
-                WHERE ID = ?";
-        
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param(
-            "ssssssi",
-            $fields['Imie'],
-            $fields['Nazwisko'],
-            $fields['miejscowosc'],
-            $fields['ulica'],
-            $fields['numertelefonu'],
-            $fields['Email'],
-            $user_id
-        );
-    } else {
-        $sql = "INSERT INTO daneosobowe 
-                (ID, Imie, Nazwisko, miejscowosc, ulica, numertelefonu, Email)
-                VALUES (?, ?, ?, ?, ?, ?, ?)";
-        
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param(
-            "issssss",
-            $user_id,
-            $fields['Imie'],
-            $fields['Nazwisko'],
-            $fields['miejscowosc'],
-            $fields['ulica'],
-            $fields['numertelefonu'],
-            $fields['Email']
-        );
-    }
+// Przygotuj zapytanie SQL do aktualizacji tylko przesłanych pól
+$sql = "UPDATE daneosobowe SET ";
+$params = [];
+$types = "";
 
-    if ($stmt->execute()) {
-        $_SESSION['success'] = "Dane zostały zapisane!";
-    } else {
-        $_SESSION['error'] = "Błąd zapisu: " . $stmt->error;
+foreach ($fields as $key => $value) {
+    if ($value !== null) {
+        $sql .= "$key = ?, ";
+        $params[] = $value;
+        $types .= "s"; // Wszystkie pola są typu string
     }
-    
+}
+
+// Usuń ostatni przecinek i spację
+$sql = rtrim($sql, ", ");
+
+// Dodaj warunek WHERE
+$sql .= " WHERE ID = ?";
+$params[] = $user_id;
+$types .= "i"; // ID jest typu integer
+
+// Wykonaj zapytanie
+try {
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param($types, ...$params);
+    $stmt->execute();
     $stmt->close();
+
+    $_SESSION['success'] = "Dane zostały zaktualizowane!";
 } catch (Exception $e) {
-    $_SESSION['error'] = "Błąd systemowy: " . $e->getMessage();
+    $_SESSION['error'] = "Błąd podczas aktualizacji danych: " . $e->getMessage();
 } finally {
     $conn->close();
     header("Location: konto.php");
     exit();
 }
+?>
