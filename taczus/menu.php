@@ -35,7 +35,7 @@
 <button onclick="exitCustomPizzaMode()">← Wróć</button>
 </div>
         <div class="ingredient-selector"></div>
-        <button class="confirm-custom" onclick="addCustomPizzaToCart()">Dodaj do koszyka (35zł + 2zł/składnik)</button>
+        <button id="add-custom-pizza-btn">Dodaj do koszyka</button>
     </div>
 </div>
     <!-- Koszyk -->

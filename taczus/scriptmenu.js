@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Konfiguracja
     const ingredientMap = {
         bazylia: "Ingredients_Basil.png",
         kukurydza: "Ingredients_Corn.png",
@@ -141,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     ];
 
-    // Stan aplikacji
+
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let currentPizza = null;
     let fallingInterval = null;
@@ -154,12 +153,10 @@ document.addEventListener("DOMContentLoaded", () => {
         pizza: new Audio('./assets/pizza-sound.mp3')
     };
 
-    // Elementy DOM
     const backgroundLayer = document.createElement('div');
     backgroundLayer.className = 'background-ingredients';
     document.body.appendChild(backgroundLayer);
 
-    // Animacja początkowa - 6 obrazków
     const initialImages = {
         left: { target: { left: "0%", top: "50%", transform: "translate(-100%, -50%) scale(0.8)", opacity: 0 } },
         right: { target: { left: "100%", top: "50%", transform: "translate(0%, -50%) scale(0.8)", opacity: 0 } },
@@ -169,7 +166,6 @@ document.addEventListener("DOMContentLoaded", () => {
         righttop: { target: { left: "100%", top: "0%", transform: "translate(0%, -100%) scale(0.6)", opacity: 0 } }
     };
 
-    // Tworzenie obrazków
     const container = document.createElement('div');
     container.className = 'initial-animation-container';
     document.body.appendChild(container);
@@ -189,7 +185,6 @@ document.addEventListener("DOMContentLoaded", () => {
         container.appendChild(img);
     });
 
-    // Animacja
     setTimeout(() => {
         Object.entries(initialImages).forEach(([id, config]) => {
             const element = document.getElementById(id);
@@ -205,7 +200,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }, 100);
 
-    // Animacja składników
     function createIngredientElement(ingredient) {
         const img = document.createElement('img');
         img.className = 'falling-ingredient';
@@ -247,7 +241,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 100);
     }
 
-    // Custom Pizza Functions
     function enterCustomPizzaMode() {
         isCustomMode = true;
         document.getElementById('pizza-menu').style.display = 'none';
@@ -257,15 +250,33 @@ document.addEventListener("DOMContentLoaded", () => {
         manageFallingIngredients([]);
     }
 
-// Zmiana w script.js w funkcji exitCustomPizzaMode
 function exitCustomPizzaMode() {
     isCustomMode = false;
     document.getElementById('pizza-menu').style.display = 'block';
     document.getElementById('custom-pizza-ui').style.display = 'none';
 }
 
+document.getElementById('add-custom-pizza-btn').addEventListener('click', addCustomPizzaToCart);
+
 function addCustomPizzaToCart() {
-    console.log("Dodawanie własnej pizzy");
+    if (customIngredients.length === 0) {
+        alert('Proszę dodać przynajmniej 1 składnik!');
+        return;
+    }
+
+    const customPizza = {
+        id: Date.now(), // Unikalny identyfikator
+        name: `Custom Pizza (${customIngredients.join(', ')})`,
+        price: BASE_PRICE + (customIngredients.length * INGREDIENT_PRICE),
+        ingredients: [...customIngredients]
+    };
+
+    console.log("Dodawana pizza:", customPizza);
+    cart.push(customPizza);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartIcon();
+    renderCartItems();
+    exitCustomPizzaMode();
 }
 
 
@@ -297,7 +308,6 @@ function addCustomPizzaToCart() {
         });
     }
 
-// Zmiana w funkcji addCustomPizzaToCart
 function addCustomPizzaToCart() {
     if (customIngredients.length === 0) {
         alert('Proszę dodać przynajmniej 1 składnik!');
@@ -310,7 +320,7 @@ function addCustomPizzaToCart() {
         ingredients: [...customIngredients]
     };
 
-    console.log("Dodawana pizza:", customPizza); // Sprawdzenie w konsoli
+    console.log("Dodawana pizza:", customPizza);
     cart.push(customPizza);
     localStorage.setItem('cart', JSON.stringify(cart));
     updateCartIcon();
@@ -319,7 +329,6 @@ function addCustomPizzaToCart() {
 }
 
 
-    // Menu pizz
     function initMenu() {
         const menuContainer = document.getElementById('pizza-menu');
         menuContainer.innerHTML = '';
@@ -372,7 +381,6 @@ function addCustomPizzaToCart() {
         };
     }
 
-    // Wyświetlanie składników
     function showIngredients(pizza) {
         const ingredientsLayer = document.querySelector('.dynamic-ingredients');
         ingredientsLayer.innerHTML = '';
@@ -423,7 +431,6 @@ function addCustomPizzaToCart() {
         setTimeout(() => ingredientsLayer.innerHTML = '', 300);
     }
 
-    // Obsługa koszyka
     
     function proceedToCheckout() {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -490,7 +497,6 @@ function addCustomPizzaToCart() {
         }
     }
 
-    // Pomocnicze
     function translateIngredients(ingredients) {
         const translations = {
             pepperoni: "Pepperoni",
@@ -513,7 +519,6 @@ function addCustomPizzaToCart() {
         return ingredients.map(ing => translations[ing] || ing);
     }
 
-    // Inicjalizacja
     document.querySelector('.cart').addEventListener('click', toggleCart);
     document.getElementById('close-cart').addEventListener('click', closeCart);
     document.getElementById('checkout-btn').addEventListener('click', proceedToCheckout);

@@ -12,6 +12,43 @@ body {
   background-color: rgb(231, 217, 188);
 }
 
+.btn-del {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.btn-del:hover {
+  background-color: #ff1a1a;
+}
+
+/* Styl dla przycisku "Wróć do menu" */
+.btn-back {
+  width: 100%;
+  padding: 15px;
+  background: rgb(146, 77, 77);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1em;
+  margin-top: 10px; /* Odstęp od przycisku "Złóż zamówienie" */
+  transition: all 0.3s ease;
+  color: white;
+  font-family: "Courier New", Courier, monospace;
+  text-align: center;
+  text-decoration: none; /* Usuwamy podkreślenie linku */
+  display: block; /* Aby przycisk zajmował całą szerokość */
+}
+
+.btn-back:hover {
+  background: rgb(230, 96, 96);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 .cart-section {
   position: relative; /* POPRAWKA */
   z-index: 20;
