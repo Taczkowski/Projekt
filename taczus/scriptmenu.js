@@ -527,3 +527,26 @@ function addCustomPizzaToCart() {
     initMenu();
     updateCartIcon();
 });
+document.querySelector('.order-form').addEventListener('submit', function (e) {
+    e.preventDefault(); // Zapobiegaj domyślnej akcji formularza
+
+    const formData = new FormData(this);
+
+    fetch('process_order.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert(data.message); // Wyświetl potwierdzenie zamówienia
+            window.location.href = 'menu.php'; // Przekieruj użytkownika do menu
+        } else {
+            alert(data.message); // Wyświetl błąd
+        }
+    })
+    .catch(error => {
+        console.error('Błąd:', error);
+        alert('Wystąpił błąd podczas składania zamówienia.');
+    });
+});

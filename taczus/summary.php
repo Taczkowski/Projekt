@@ -201,6 +201,6 @@ foreach ($groupedCart as $item) {
 
     // Wywołaj funkcję aktualizującą koszyk przy załadowaniu strony
     document.addEventListener('DOMContentLoaded', updateCartDisplay);
-</script>
+    </script>
 </body>
 </html>
