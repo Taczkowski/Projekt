@@ -527,26 +527,46 @@ function addCustomPizzaToCart() {
     initMenu();
     updateCartIcon();
 });
-document.querySelector('.order-form').addEventListener('submit', function (e) {
-    e.preventDefault(); // Zapobiegaj domyślnej akcji formularza
+document.getElementById('order-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const submitBtn = this.querySelector('.btn-submit');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Przetwarzanie...';
 
-    const formData = new FormData(this);
+    const formData = {
+        fullname: this.fullname.value,
+        address: this.address.value,
+        city: this.city.value,
+        phone: this.phone.value,
+        email: this.email.value,
+        payment: this.querySelector('input[name="payment"]:checked').value,
+        cart: JSON.parse(localStorage.getItem('cart')) || []
+    };
 
     fetch('process_order.php', {
         method: 'POST',
-        body: formData
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
     })
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
-            alert(data.message); // Wyświetl potwierdzenie zamówienia
-            window.location.href = 'menu.php'; // Przekieruj użytkownika do menu
+            alert(data.message);
+            localStorage.removeItem('cart');
+            window.location.href = `order_success.php?id=${data.data.order_id}`;
         } else {
-            alert(data.message); // Wyświetl błąd
+            throw new Error(data.message);
         }
     })
     .catch(error => {
-        console.error('Błąd:', error);
-        alert('Wystąpił błąd podczas składania zamówienia.');
+        console.error('Error:', error);
+        alert('Błąd: ' + error.message);
+    })
+    .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Złóż zamówienie';
     });
 });

@@ -1,21 +1,24 @@
 <?php
 session_start();
 
-// Odbierz dane z koszyka z URL
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
 if (isset($_GET['cart'])) {
     $cart = json_decode(urldecode($_GET['cart']), true);
-
-    // Grupowanie pizz według nazwy i sumowanie ilości
+    
     $groupedCart = [];
     foreach ($cart as $item) {
         $name = $item['name'];
-        $quantity = $item['quantity'] ?? 1; // Ustaw domyślną ilość na 1, jeśli klucz nie istnieje
+        $quantity = $item['quantity'] ?? 1;
 
         if (isset($groupedCart[$name])) {
             $groupedCart[$name]['quantity'] += $quantity;
         } else {
             $groupedCart[$name] = $item;
-            $groupedCart[$name]['quantity'] = $quantity; // Upewnij się, że ilość jest ustawiona
+            $groupedCart[$name]['quantity'] = $quantity;
         }
     }
     $_SESSION['cart'] = $groupedCart;
@@ -23,12 +26,13 @@ if (isset($_GET['cart'])) {
     $groupedCart = $_SESSION['cart'] ?? [];
 }
 
-// Oblicz całkowitą kwotę zamówienia
 $total = 0;
 foreach ($groupedCart as $item) {
-    $quantity = $item['quantity'] ?? 1; // Ustaw domyślną ilość na 1, jeśli klucz nie istnieje
+    $quantity = $item['quantity'] ?? 1;
     $total += $item['price'] * $quantity;
 }
+
+$error = $_GET['error'] ?? null;
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +47,6 @@ foreach ($groupedCart as $item) {
     <div class="snowflakes"></div>
     
     <div class="order-container">
-        <!-- Lewa kolumna - Koszyk -->
         <div class="cart-section">
             <h2>Twój koszyk</h2>
             
@@ -58,17 +61,25 @@ foreach ($groupedCart as $item) {
                                 <span class="item-price"><?= number_format($item['price'], 2) ?> zł</span>
                             </div>
                             <div class="item-quantity">
-                                <span>Ilość: <?= $item['quantity'] ?? 1 ?></span> <!-- Ustaw domyślną ilość na 1 -->
+                                <span>Ilość: <?= $item['quantity'] ?? 1 ?></span>
                             </div>
-                            <button class="btn-del" onclick="removeFromCart('<?= htmlspecialchars($name) ?>')">Usuń jedną</button>
                         </div>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
         </div>
 
-        <!-- Prawa kolumna - Formularz -->
         <div class="order-section">
+            <?php if($error): ?>
+                <div class="error-message">
+                    <?php if($error == 1): ?>
+                        Wystąpił błąd podczas składania zamówienia. Spróbuj ponownie.
+                    <?php elseif($error == 2): ?>
+                        Koszyk jest pusty lub nie jesteś zalogowany.
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+
             <div class="order-summary">
                 <h3>Podsumowanie</h3>
                 <div class="summary-row">
@@ -80,7 +91,7 @@ foreach ($groupedCart as $item) {
             <form class="order-form" action="process_order.php" method="POST">
                 <div class="form-group">
                     <label>Imię i nazwisko *</label>
-                    <input type="text" name="fullname" required>
+                    <input type="text" name="fullname" required value="<?= isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : '' ?>">
                 </div>
                 
                 <div class="form-group">
@@ -100,7 +111,7 @@ foreach ($groupedCart as $item) {
 
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" name="email">
+                    <input type="email" name="email" value="<?= isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : '' ?>">
                 </div>
 
                 <div class="payment-methods">
@@ -125,82 +136,25 @@ foreach ($groupedCart as $item) {
     </div>
 
     <script src="falling-ingredients.js"></script>
-    <script src="script.js"></script>
-    <script src="scriptmenu.js"></script>
     <script>
-    // Funkcja do usuwania jednej pizzy z koszyka
     function removeFromCart(name) {
-        // Pobierz koszyk z localStorage
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-        // Znajdź indeks produktu o podanej nazwie
-        const index = cart.findIndex(item => item.name === name);
-
-        if (index !== -1) {
-            // Zmniejsz ilość o 1
-            cart[index].quantity -= 1;
-
-            // Jeśli ilość spadnie do 0, usuń produkt z koszyka
-            if (cart[index].quantity <= 0) {
-                cart.splice(index, 1);
-            }
-
-            // Zapisz zaktualizowany koszyk z powrotem do localStorage
-            localStorage.setItem('cart', JSON.stringify(cart));
-
-            // Natychmiast zaktualizuj wyświetlanie koszyka na stronie
-            updateCartDisplay();
-        }
-    }
-
-    // Funkcja do aktualizacji wyświetlania koszyka
-    function updateCartDisplay() {
-        const cartItemsContainer = document.querySelector('.cart-items');
-        cartItemsContainer.innerHTML = '';
-        let total = 0;
-
-        // Pobierz koszyk z localStorage
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-        // Grupowanie pizz według nazwy i sumowanie ilości
-        let groupedCart = {};
-        cart.forEach(item => {
-            const name = item.name;
-            const quantity = item.quantity || 1; // Ustaw domyślną ilość na 1, jeśli klucz nie istnieje
-
-            if (groupedCart[name]) {
-                groupedCart[name].quantity += quantity;
-            } else {
-                groupedCart[name] = { ...item, quantity: quantity };
+        fetch('remove_from_cart.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({name: name})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                location.reload();
             }
         });
-
-        // Wyświetl każdą grupę produktów w koszyku
-        Object.keys(groupedCart).forEach(name => {
-            const item = groupedCart[name];
-            const itemElement = document.createElement('div');
-            itemElement.classList.add('cart-item');
-            itemElement.id = `item-${name}`;
-            itemElement.innerHTML = `
-                <div class="item-info">
-                    <span class="item-name">${name}</span>
-                    <span class="item-price">${item.price.toFixed(2)} zł</span>
-                </div>
-                <div class="item-quantity">
-                    <span>Ilość: ${item.quantity}</span>
-                </div>
-                <button class="btn-del" onclick="removeFromCart('${name}')">Usuń jedną</button>
-            `;
-            cartItemsContainer.appendChild(itemElement);
-            total += item.price * item.quantity;
-        });
-
-        // Zaktualizuj całkowitą kwotę
-        document.querySelector('.total-price').textContent = `${total.toFixed(2)} zł`;
     }
 
-    // Wywołaj funkcję aktualizującą koszyk przy załadowaniu strony
-    document.addEventListener('DOMContentLoaded', updateCartDisplay);
+    document.addEventListener('DOMContentLoaded', function() {
+    });
     </script>
 </body>
 </html>

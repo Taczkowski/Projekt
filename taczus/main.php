@@ -61,4 +61,10 @@ require_once 'db_config.php';
 
     <script src="script.js"></script>
 </body>
+<?php
+
+if (isset($_GET['order_success'])) {
+    echo '<div class="alert alert-success">Zamówienie zostało złożone pomyślnie!</div>';
+}
+?>
 </html>
