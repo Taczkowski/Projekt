@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Pizzeria</title>
+    <link rel="stylesheet" href="styles.css">
+    
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <button class="btn logout" id="logoutBtn">Wyloguj</button>
+            <div class="status-buttons">
+                <button class="btn open" id="openBtn">Otwarcie</button>
+                <button class="btn close" id="closeBtn" style="display: none;">Zamknięcie</button>
+                <button class="btn delivery-toggle" id="deliveryToggleBtn" style="display: none;">Wstrzymanie dostaw</button>
+            </div>
+            <span>Czas Dostawy: <input class="time" type="text" readonly value="Ładowanie..."></span>
+        </div>
+        
+        <div class="dashboard">
+            <!-- Nowe zamówienia -->
+            <div class="column" id="nowe-zamowienia">
+                <div class="section-title">Nowe zamówienia</div>
+                <div class="no-orders">Ładowanie zamówień...</div>
+            </div>
+
+            <!-- Przyjęte i Odrzucone -->
+            <div class="column-container">
+                <div class="column large" id="przyjete">
+                    <div class="section-title">Przyjęte</div>
+                    <div class="no-orders">Brak zamówień</div>
+                </div>
+                <div class="column" id="odrzucone">
+                    <div class="section-title">Odrzucone</div>
+                    <div class="no-orders">Brak zamówień</div>
+                </div>
+            </div>
+
+            <!-- W trakcie -->
+            <div class="column large" id="w-trakcie">
+                <div class="section-title">W trakcie</div>
+                <div class="no-orders">Brak zamówień</div>
+            </div>
+
+            <!-- U Dostawcy i Zrealizowane -->
+            <div class="column-container">
+                <div class="column" id="u-dostawcy">
+                    <div class="section-title">U Dostawcy</div>
+                    <div class="no-orders">Brak zamówień</div>
+                </div>
+                <div class="column" id="zrealizowane">
+                    <div class="section-title">Zrealizowane</div>
+                    <div class="no-orders">Brak zamówień</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Konfiguracja
+            const COOK_TIME_PER_PIZZA = 5;
+            const COOKS = 2;
+            const BASE_TIME = 15;
+            const API_URL = 'api.php';
+            
+            // Mapowanie kolumn do statusów w bazie danych
+            const STATUS_MAPPING = {
+                'nowe-zamowienia': 'nowe',
+                'przyjete': 'przyjete',
+                'w-trakcie': 'w trakcie',
+                'u-dostawcy': 'u dostawcy',
+                'zrealizowane': 'zrealizowane',
+                'odrzucone': 'odrzucone'
+            };
+            
+            // Elementy DOM
+            const timeInput = document.querySelector('.time');
+            const columns = document.querySelectorAll('.column');
+            
+            // ----------- Funkcje główne ----------- //
+            
+            // Pobieranie zamówień z API
+            async function fetchOrders(status) {
+                try {
+                    const response = await fetch(`${API_URL}?action=get_orders&status=${status}`);
+                    if (!response.ok) throw new Error('Błąd sieci');
+                    return await response.json();
+                } catch (error) {
+                    console.error(`Błąd przy pobieraniu zamówień (status: ${status}):`, error);
+                    return [];
+                }
+            }
+            
+            // Ładowanie wszystkich zamówień
+            async function loadAllOrders() {
+                for (const [columnId, dbStatus] of Object.entries(STATUS_MAPPING)) {
+                    const orders = await fetchOrders(dbStatus);
+                    renderOrders(columnId, orders);
+                }
+                calculateWaitingTime();
+            }
+            
+            // Renderowanie zamówień w kolumnie
+            function renderOrders(columnId, orders) {
+                const column = document.getElementById(columnId);
+                if (!column) return;
+            
+                // Zachowaj tytuł kolumny
+                const title = column.querySelector('.section-title')?.textContent || '';
+                column.innerHTML = `<div class="section-title">${title}</div>`;
+            
+                if (orders.length === 0) {
+                    column.innerHTML += '<div class="no-orders">Brak zamówień</div>';
+                    return;
+                }
+            
+                orders.forEach(order => {
+                    const orderElement = createOrderElement(order);
+                    column.appendChild(orderElement);
+                    setupDragEvents(orderElement);
+                });
+            }
+            
+            // Tworzenie elementu zamówienia (zgodnie z oryginalnym stylem)
+            function createOrderElement(order) {
+                const element = document.createElement('div');
+                element.className = 'draggable';
+                element.draggable = true;
+                element.dataset.orderId = order.id_zamowienia;
+                
+                // Formatowanie listy pizz
+                let pizzasHTML = '';
+                if (order.szczegoly && order.szczegoly.length > 0) {
+                    order.szczegoly.forEach(pizza => {
+                        pizzasHTML += `<li class="pizza-item">${pizza.nazwa_pizzy} x ${pizza.ilosc}</li>`;
+                    });
+                }
+                
+                element.innerHTML = `
+                    <div><strong>Adres:</strong> ${order.adres || 'Brak danych'}, ${order.miasto || ''}</div>
+                    <div><strong>Imię i nazwisko:</strong> ${order.imie_nazwisko || 'Brak danych'}</div>
+                    <div><strong>Numer zamówienia:</strong> #${order.id_zamowienia}</div>
+                    ${order.telefon ? `<div><strong>Telefon:</strong> ${order.telefon}</div>` : ''}
+                    ${order.uwagi ? `<div class="customer-notes"><strong>Uwagi:</strong> ${order.uwagi}</div>` : ''}
+                    <div><strong>Zamówione pizze:</strong> ${order.liczba_pizz || 0} szt.</div>
+                    ${pizzasHTML ? `<ul class="pizza-list">${pizzasHTML}</ul>` : ''}
+                `;
+                
+                return element;
+            }
+            
+            // Obliczanie czasu dostawy
+            async function calculateWaitingTime() {
+                try {
+                    const activeOrders = [
+                        ...await fetchOrders('przyjete'),
+                        ...await fetchOrders('w trakcie')
+                    ];
+            
+                    const totalPizzas = activeOrders.reduce((sum, order) => 
+                        sum + (order.liczba_pizz || 0), 0);
+            
+                    if (totalPizzas === 0) {
+                        timeInput.value = "Natychmiastowa dostawa";
+                        return;
+                    }
+            
+                    const totalMinutes = Math.round((totalPizzas * COOK_TIME_PER_PIZZA) / COOKS + BASE_TIME);
+                    const hours = Math.floor(totalMinutes / 60);
+                    const minutes = totalMinutes % 60;
+            
+                    timeInput.value = hours > 0 
+                        ? `${hours}h ${minutes}min` 
+                        : `${minutes}min`;
+                } catch (error) {
+                    console.error('Błąd obliczeń czasu:', error);
+                    timeInput.value = "---";
+                }
+            }
+            
+            // Aktualizacja statusu zamówienia
+            async function updateOrderStatus(orderId, newStatus) {
+                try {
+                    const response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: `action=update_status&order_id=${orderId}&new_status=${newStatus}`
+                    });
+                    return await response.json();
+                } catch (error) {
+                    console.error('Błąd aktualizacji statusu:', error);
+                    return { success: false };
+                }
+            }
+            
+            // ----------- Drag & Drop ----------- //
+            
+            function setupDragEvents(element) {
+                element.addEventListener('dragstart', () => {
+                    element.classList.add('dragging');
+                });
+            
+                element.addEventListener('dragend', () => {
+                    element.classList.remove('dragging');
+                    calculateWaitingTime();
+                });
+            }
+            
+            columns.forEach(column => {
+                column.addEventListener('dragover', async (e) => {
+                    e.preventDefault();
+                    const draggable = document.querySelector('.dragging');
+                    if (!draggable) return;
+            
+                    const afterElement = getDragAfterElement(column, e.clientY);
+                    const orderId = draggable.dataset.orderId;
+                    const newStatus = STATUS_MAPPING[column.id];
+            
+                    // Aktualizacja w bazie danych
+                    const result = await updateOrderStatus(orderId, newStatus);
+                    
+                    if (result.success) {
+                        afterElement 
+                            ? column.insertBefore(draggable, afterElement) 
+                            : column.appendChild(draggable);
+                    }
+                });
+            });
+            
+            function getDragAfterElement(container, y) {
+                const elements = [...container.querySelectorAll('.draggable:not(.dragging)')];
+                
+                return elements.reduce((closest, child) => {
+                    const box = child.getBoundingClientRect();
+                    const offset = y - box.top - box.height / 2;
+                    return offset < 0 && offset > closest.offset 
+                        ? { offset: offset, element: child } 
+                        : closest;
+                }, { offset: Number.NEGATIVE_INFINITY }).element;
+            }
+            
+            // ----------- Inicjalizacja ----------- //
+            
+            // Automatyczne odświeżanie co 10 sekund
+            setInterval(loadAllOrders, 10000);
+            
+            // Pierwsze ładowanie
+            loadAllOrders();
+            
+            // Obsługa przycisków (otwieranie/zamykanie restauracji)
+            document.getElementById('openBtn').addEventListener('click', () => {
+                document.getElementById('openBtn').style.display = 'none';
+                document.getElementById('closeBtn').style.display = 'inline-block';
+                document.getElementById('deliveryToggleBtn').style.display = 'inline-block';
+            });
+            
+            document.getElementById('closeBtn').addEventListener('click', () => {
+                document.getElementById('openBtn').style.display = 'inline-block';
+                document.getElementById('closeBtn').style.display = 'none';
+                document.getElementById('deliveryToggleBtn').style.display = 'none';
+            });
+            
+            document.getElementById('deliveryToggleBtn').addEventListener('click', function() {
+                this.textContent = this.textContent === 'Wstrzymanie dostaw' 
+                    ? 'Wznów dostawy' 
+                    : 'Wstrzymanie dostaw';
+                this.classList.toggle('wznow');
+            });
+            
+            // Wylogowanie
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                if (confirm('Na pewno chcesz się wylogować?')) {
+                    window.location.href = 'logout.php';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
