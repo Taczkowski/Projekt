@@ -1,0 +1,85 @@
+/* Animacja startowa */
+.initial-animation-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+  }
+  
+  .initial-animation-container img {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    opacity: 1;
+    transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 1s ease-out,
+                filter 0.8s ease;
+    filter: blur(0);
+    transform: translate(-50%, -50%) scale(1);
+    left: 50%;
+    top: 50%;
+  }
+  
+  /* Końcowe pozycje dla każdego obrazka */
+  #left {
+    transition-delay: 0.1s;
+  }
+  #right {
+    transition-delay: 0.2s;
+  }
+  #leftbottom {
+    transition-delay: 0.3s;
+  }
+  #lefttop {
+    transition-delay: 0.4s;
+  }
+  #rightbottom {
+    transition-delay: 0.5s;
+  }
+  #righttop {
+    transition-delay: 0.6s;
+  }
+  
+  /* Końcowy stan animacji */
+  .initial-animation-container.animate-out img {
+    filter: blur(8px);
+  }
+  .initial-animation-container.animate-out #left {
+    left: 0%;
+    transform: translate(-100%, -50%) scale(0.8);
+    opacity: 0;
+  }
+  .initial-animation-container.animate-out #right {
+    left: 100%;
+    transform: translate(0%, -50%) scale(0.8);
+    opacity: 0;
+  }
+  .initial-animation-container.animate-out #leftbottom {
+    left: 0%;
+    top: 100%;
+    transform: translate(-100%, 0%) scale(0.6);
+    opacity: 0;
+  }
+  .initial-animation-container.animate-out #lefttop {
+    left: 0%;
+    top: 0%;
+    transform: translate(-100%, -100%) scale(0.6);
+    opacity: 0;
+  }
+  .initial-animation-container.animate-out #rightbottom {
+    left: 100%;
+    top: 100%;
+    transform: translate(0%, 0%) scale(0.6);
+    opacity: 0;
+  }
+  .initial-animation-container.animate-out #righttop {
+    left: 100%;
+    top: 0%;
+    transform: translate(0%, -100%) scale(0.6);
+    opacity: 0;
+  }
