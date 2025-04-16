@@ -1,0 +1,45 @@
+/* falling-ingredients.css */
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.content{
+    position: relative;
+    z-index: 10; /* Nad składnikami, ale pod account-container */
+  }
+body {
+    overflow-x: hidden;
+}
+
+.background-ingredients {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1; /* Tło na najniższym poziomie */
+    overflow: hidden;
+}
+
+.falling-ingredient {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    animation-timing-function: linear;
+    opacity: 1;
+    animation-delay: 0.1s;
+    z-index: 4; /* Składniki nad tłem, ale pod główną zawartością */
+    pointer-events: none; /* Zapobiega blokowaniu kliknięć */
+}
+
+@keyframes fall {
+    from {
+        transform: translateY(-100vh) rotate(0deg);
+    }
+    to {
+        transform: translateY(100vh) rotate(360deg);
+    }
+}
